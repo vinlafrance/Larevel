@@ -1,0 +1,6 @@
+CREATE TABLE Catalogue(...);
+CREATE TABLE Inventaire(...);
+CREATE TABLE Clients(...);
+CREATE TABLE Gerants(...);
+CREATE TABLE Panier(...);
+CREATE TABLE Boutiques(...);
