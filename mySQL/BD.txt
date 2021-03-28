@@ -1,6 +1,18 @@
-CREATE TABLE Catalogue(...);
-CREATE TABLE Inventaire(...);
-CREATE TABLE Clients(...);
-CREATE TABLE Gerants(...);
-CREATE TABLE Panier(...);
-CREATE TABLE Boutiques(...);
+/* CREATE DATABASE IF NOT EXISTS BDMagasin; */
+
+
+CREATE TABLE IF NOT EXISTS Clients(username varchar(100), password varchar(100), nom varchar(100), adresse varchar(100), PRIMARY KEY(username));
+
+CREATE TABLE IF NOT EXISTS Gerants(gid integer, nom varchar(100), PRIMARY KEY(gid));
+
+CREATE TABLE IF NOT EXISTS Boutiques(bid integer, ville varchar(100), gid integer,
+PRIMARY KEY(bid), FOREIGN KEY(gid) REFERENCES (Gerants));
+
+CREATE TABLE IF NOT EXISTS Inventaire(lid integer, bid integer, quantite integer, type varchar(10), prix double,
+PRIMARY KEY(lid, bid), FOREIGN KEY(lid) REFERENCES (Catalogue), FOREIGN KEY(bid) REFERENCES (Boutiques));
+
+CREATE TABLE IF NOT EXISTS Panier(pid integer AUTO_INCREMENT, username varchar(100), lid integer, bid integer, quantite integer, type varchar(10), prix double,
+PRIMARY KEY(pid), FOREIGN KEY(username) REFERENCES (Clients), FOREIGN KEY(lid) REFERENCES (Catalogue),
+FOREIGN KEY(bid) REFERENCES (Boutiques), FOREIGN KEY(type) REFERENCES (Inventaire));
+
+CREATE TABLE IF NOT EXISTS Catalogue(lid integer AUTO_INCREMENT, titre varchar(100), auteur varchar(100), genre varchar(100), annee year, PRIMARY KEY(lid));
