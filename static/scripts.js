@@ -1,11 +1,6 @@
-function estConnecte()
+function nonConnecte()
 {
-    location.href("Panier.html");
-}
-
-function connexionSucces()
-{
-    connexion = true;
+    alert("Veuillez vous connecter afin d'avoir accès à cette fonctionnalité.");
 }
 
 function afficherCatalogue()
