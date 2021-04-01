@@ -3,21 +3,22 @@
 <head>
     <meta charset="UTF-8">
     <title>
-        Description
+        Catalogue
     </title>
-    <link rel="stylesheet" type="text/css" href="../../static/CSS/Description.css">
+    <link rel="stylesheet" type="text/css" href="/static/Catalogue.css">
 </head>
 <body>
 <header>
-    <button id="bouton_accueil"><a href="../HTML/Accueil.html">Accueil</a></button>
+    <button id="bouton_accueil"><a href="/templates/Accueil.html">Accueil</a></button>
     <button id="bouton_panier" onclick="estConnecte()">Panier</button>
-    <button id="bouton_inscription"><a href="../HTML/Inscription.html">Inscription</a></button>
-    <button id="bouton_connexion"><a href="../HTML/Connection.html">Connexion</a></button>
+    <button id="bouton_inscription"><a href="/templates/Inscription.html">Inscription</a></button>
+    <button id="bouton_connexion"><a href="/templates/Connection.html">Connexion</a></button>
 </header>
 <section>
 <h1>
-    Description de l'article:
+    Voici le catalogue! :)
 </h1>
+<div onload="afficherCatalogue()"></div>
 </section>
 <footer>
     <p id="footer_contact">
@@ -30,5 +31,5 @@
     </p>
 </footer>
 </body>
-<script src="../../static/Javascript/scripts.js"></script>
+<script src="/static/scripts.js"></script>
 </html>

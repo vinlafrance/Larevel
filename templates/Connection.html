@@ -5,18 +5,18 @@
     <title>
         Connection
     </title>
-    <link rel="stylesheet" type="text/css" href="../../static/CSS/Connection.css">
+    <link rel="stylesheet" type="text/css" href="/static/Connection.css">
 </head>
 <body>
 <header>
-    <button id="bouton_accueil"><a href="../HTML/Accueil.html">Accueil</a></button>
+    <button id="bouton_accueil"><a href="/templates/Accueil.html">Accueil</a></button>
     <button id="bouton_panier" onclick="estConnecte()">Panier</button>
-    <button id="bouton_inscription"><a href="../HTML/Inscription.html">Inscription</a></button>
-    <button id="bouton_connexion"><a href="../HTML/Connection.html">Connexion</a></button>
+    <button id="bouton_inscription"><a href="/templates/Inscription.html">Inscription</a></button>
+    <button id="bouton_connexion"><a href="/templates/Connection.html">Connexion</a></button>
 </header>
 <section>
     <h1>Connection</h1>
-    <form action="../../Python/scriptsFlask.py">
+    <form action="/Python/scriptsFlask.py">
         <label for="username">Nom d'utilisateur:</label><br>
         <input type="text" id="username" name="username"><br>
         <label for="password">Mot de passe:</label><br>
@@ -38,5 +38,5 @@
     </p>
 </footer>
 </body>
-<script src="../../static/Javascript/scripts.js"></script>
+<script src="/static/scripts.js"></script>
 </html>

@@ -5,18 +5,18 @@
     <title>
         Inscription
     </title>
-    <link rel="stylesheet" type="text/css" href="../../static/CSS/Inscription.css">
+    <link rel="stylesheet" type="text/css" href="/static/Inscription.css">
 </head>
 <body>
 <header>
-    <button id="bouton_accueil"><a href="../HTML/Accueil.html">Accueil</a></button>
+    <button id="bouton_accueil"><a href="/templates/Accueil.html">Accueil</a></button>
     <button id="bouton_panier" onclick="estConnecte()">Panier</button>
-    <button id="bouton_inscription"><a href="../HTML/Inscription.html">Inscription</a></button>
-    <button id="bouton_connexion"><a href="../HTML/Connection.html">Connexion</a></button>
+    <button id="bouton_inscription"><a href="/templates/Inscription.html">Inscription</a></button>
+    <button id="bouton_connexion"><a href="/templates/Connection.html">Connexion</a></button>
 </header>
 <section>
     <h1>Inscription</h1>
-    <form action="../../Python/scriptsFlask.py">
+    <form action="/Python/scriptsFlask.py">
         <label for="nom">Prénom et nom:</label><br>
         <input type="text" id="nom" name="nom"><br>
         <label for="adresse">Adresse:</label><br>
@@ -39,5 +39,5 @@
     </p>
 </footer>
 </body>
-<script src="../../static/Javascript/scripts.js"></script>
+<script src="/static/scripts.js"></script>
 </html>
