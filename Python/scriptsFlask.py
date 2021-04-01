@@ -1,4 +1,16 @@
+from flask import Flask
 import hashlib, binascii, os
+
+app = Flask(__name__)
+@app.route("/")
+def main():
+    return "Bonjour et bienvenu!"
+
+
+if __name__ == "__main__":
+    app.run()
+
+
 
 def verify_password(stored_password, provided_password):
     #Verify a stored password against one provided by user
