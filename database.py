@@ -5,7 +5,8 @@ connection = pymysql.connect(
     user="root",
     password="",
     db="larevel",
-    charset='utf8mb4')
+    charset='utf8mb4',
+    autocommit=True)
 
 #Sets the encoding to include french characters
 cursor = connection.cursor()

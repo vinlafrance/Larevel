@@ -38,7 +38,7 @@ def Accueil():
 def ConnexionTest():
     username = '"' + request.form.get('username') + '"'
     password = request.form.get('password')
-    conn= pymysql.connect(host='localhost',user='root',password='',db='larevel', charset='utf8mb4')
+    conn= pymysql.connect(host='localhost',user='root',password='',db='larevel', charset='utf8mb4', autocommit=True)
     cmd='SELECT password FROM Clients WHERE username='+username+';'
     cur=conn.cursor()
     cur.execute(cmd)
@@ -92,7 +92,7 @@ def Deconnexion():
 @app.route("/InscriptionTest", methods=['POST'])
 def InscriptionTest():
     username = '"' + request.form.get("username") + '"'
-    conn= pymysql.connect(host='localhost',user='root',password='',db='larevel', charset='utf8mb4')
+    conn= pymysql.connect(host='localhost',user='root',password='',db='larevel', charset='utf8mb4', autocommit=True)
     cmd='SELECT * FROM Clients WHERE username='+username+';'
     cur=conn.cursor()
     cur.execute(cmd)
@@ -109,6 +109,3 @@ def InscriptionTest():
 
 if __name__ == "__main__":
     app.run()
-
-
-
