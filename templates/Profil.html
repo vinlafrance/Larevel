@@ -10,15 +10,22 @@
 </head>
 <body>
 <header>
-    <button id="bouton_accueil"><a href="Accueil_connecte.html">Accueil</a></button>
-    <button id="bouton_panier"><a href="Panier.html">Panier</a></button>
-    <button id="bouton_catalogue"><a href="Catalogue.html">Catalogue</a></button>
-    <button id="bouton_profil"><a href="Profil.html">Profil</a></button>
+    <button id="bouton_accueil"><a href="Accueil">Accueil</a></button>
+    <button id="bouton_panier"><a href="Panier">Panier</a></button>
+    <button id="bouton_catalogue"><a href="Catalogue">Catalogue</a></button>
+    <button id="bouton_profil"><a href="Profil">Profil</a></button>
 </header>
 <section>
 <h1>
     Voici votre profil:
 </h1>
+<h2>
+    <br>
+    Username : {{profil.username}}<br>
+    Nom : {{profil.nom}}<br>
+    Courriel : {{profil.courriel}}
+</h2>
+<button id="bouton_deconnexion"><a href="Deconnexion">Se déconnecter</a></button>
 </section>
 <footer>
     <p id="footer_contact">

@@ -10,14 +10,14 @@
 </head>
 <body>
 <header>
-    <button id="bouton_accueil"><a href="Accueil_non_connecte.html">Accueil</a></button>
+    <button id="bouton_accueil"><a href="Accueil">Accueil</a></button>
     <button id="bouton_panier" onclick="nonConnecte()">Panier</button>
-    <button id="bouton_inscription"><a href="Inscription.html">Inscription</a></button>
-    <button id="bouton_connexion"><a href="Connection.html">Connexion</a></button>
+    <button id="bouton_inscription"><a href="Inscription">Inscription</a></button>
+    <button id="bouton_connexion"><a href="Connexion">Connexion</a></button>
 </header>
 <section>
     <h1>Inscription</h1>
-    <form action="../app.py">
+    <form action="InscriptionTest" method="POST">
         <label for="nom">Prénom et nom:</label><br>
         <input type="text" id="nom" name="nom"><br>
         <label for="courriel">Courriel:</label><br>
@@ -28,6 +28,10 @@
         <input type="text" id="password" name="password"><br>
         <input type="submit" value="S'inscrire">
     </form>
+
+    {% if message %}
+    <div id="message">{{message}}</div>
+    {% endif %}
 </section>
 <footer>
     <p id="footer_contact">
