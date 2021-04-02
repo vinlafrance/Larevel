@@ -1,5 +1,5 @@
-(1, Arthur Charlebois),
-(2, Alexander Doyon),
-(3, Nicolas Pouliot),
-(4, Leanne Ringuette),
-(5, Emmy Chaput)
+(1, "Arthur Charlebois")
+(2, "Alexander Doyon")
+(3, "Nicolas Pouliot")
+(4, "Léanne Ringuette")
+(5, "Emmy Chaput")

@@ -37,9 +37,8 @@ def Accueil():
 @app.route("/ConnexionTest", methods=['POST'])
 def ConnexionTest():
     username = '"' + request.form.get('username') + '"'
-    #password = request.form.get('password')
-    """
-    conn= pymysql.connect(host='localhost',user='root',password='',db='')
+    password = request.form.get('password')
+    conn= pymysql.connect(host='localhost',user='root',password='',db='larevel', charset='utf8mb4')
     cmd='SELECT password FROM Clients WHERE username='+username+';'
     cur=conn.cursor()
     cur.execute(cmd)
@@ -49,13 +48,12 @@ def ConnexionTest():
         cur=conn.cursor()
         cur.execute(cmd)
         info = cur.fetchone()
-        """
-    global ProfilUtilisateur
-    ProfilUtilisateur["username"]=username
-    ProfilUtilisateur["nom"]="John Doe"#info[2]
-    ProfilUtilisateur["courriel"]="johndoe@gmail.com"#info[3]
-    return render_template('Connexion_succes.html', profil=ProfilUtilisateur) 
-    #return render_template("Connexion.html", message="Informations invalides!")
+        global ProfilUtilisateur
+        ProfilUtilisateur["username"]=username
+        ProfilUtilisateur["nom"]=info[2]
+        ProfilUtilisateur["courriel"]=info[3]
+        return render_template('Connexion_succes.html', profil=ProfilUtilisateur) 
+    return render_template("Connexion.html", message="Informations invalides!")
 
 @app.route("/Catalogue")
 def Catalogue():
@@ -93,9 +91,8 @@ def Deconnexion():
 
 @app.route("/InscriptionTest", methods=['POST'])
 def InscriptionTest():
-    '''
     username = '"' + request.form.get("username") + '"'
-    conn= pymysql.connect(host='localhost',user='root',password='',db='')
+    conn= pymysql.connect(host='localhost',user='root',password='',db='larevel', charset='utf8mb4')
     cmd='SELECT * FROM Clients WHERE username='+username+';'
     cur=conn.cursor()
     cur.execute(cmd)
@@ -108,7 +105,6 @@ def InscriptionTest():
     cmd='INSERT INTO Clients VALUE ('+username+', '+password+', '+nom+', '+courriel+');'
     cur=conn.cursor()
     cur.execute(cmd)
-    '''
     return render_template("Inscription.html", message="Félicitation, vous êtes maintenant inscrit!")
 
 if __name__ == "__main__":

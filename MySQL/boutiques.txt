@@ -1,5 +1,5 @@
-(1, Quebec, 2),
-(2, Montreal, 4),
-(3, Trois-Rivieres, 3),
-(4, Drummondville, 1),
-(5, Joliette, 5)
+(1, "Québec", 2)
+(2, "Montreal", 4)
+(3, "Trois-Rivières", 3)
+(4, "Drummondville", 1)
+(5, "Joliette", 5)
