@@ -57,7 +57,15 @@ def ConnexionTest():
 
 @app.route("/Catalogue")
 def Catalogue():
-    return render_template("Catalogue.html")
+    catalogue = []
+    conn= pymysql.connect(host='localhost',user='root',password='',db='larevel', charset='utf8mb4', autocommit=True)
+    cmd='SELECT * FROM Catalogue;'
+    cur=conn.cursor()
+    cur.execute(cmd)
+    for i in range(100):
+        item = cur.fetchone()
+        catalogue.append({"titre" : item[1], "auteur" : item[2], "genre" : item[3], "annee" : item[4]})
+    return render_template("Catalogue.html", catalogue=catalogue)
 
 @app.route("/Connexion")
 def Connection():

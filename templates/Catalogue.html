@@ -19,7 +19,9 @@
 <h1>
     Voici le catalogue! :)
 </h1>
-<div onload="afficherCatalogue()"></div>
+{% for c in catalogue %}
+<p id="catalogue_item">{{c.titre}}, {{c.auteur}}, {{c.genre}}, {{c.annee}}</p>
+{% endfor %}
 </section>
 <footer>
     <p id="footer_contact">
