@@ -6,6 +6,7 @@
         Inscription
     </title>
     <link rel="stylesheet" type="text/css" href="../static/Base.css">
+    <link rel="stylesheet" type="text/css" href="../static/Inscription.css">
     <script src="../static/scripts.js"></script>
 </head>
 <body>
@@ -26,7 +27,7 @@
         <input type="text" id="username" name="username" required><br>
         <label for="password">Mot de passe:</label><br>
         <input type="password" id="password" name="password" required minlength="8" maxlength="14"><br>
-        <input type="submit" value="S'inscrire">
+        <input id="submit" type="submit" value="S'inscrire">
     </form>
 
     {% if message %}

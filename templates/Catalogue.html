@@ -6,6 +6,7 @@
         Catalogue
     </title>
     <link rel="stylesheet" type="text/css" href="../static/Base.css">
+    <link rel="stylesheet" type="text/css" href="../static/Catalogue.css">
     <script src="../static/scripts.js"></script>
 </head>
 <body>
@@ -19,9 +20,11 @@
 <h1>
     Voici le catalogue! :)
 </h1>
+<div id="contenant">
 {% for c in catalogue %}
 <p id="catalogue_item">{{c.titre}}, {{c.auteur}}, {{c.genre}}, {{c.annee}}</p>
 {% endfor %}
+</div>
 </section>
 <footer>
     <p id="footer_contact">

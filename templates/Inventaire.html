@@ -3,23 +3,26 @@
 <head>
     <meta charset="UTF-8">
     <title>
-        Panier
+        Inventaire
     </title>
     <link rel="stylesheet" type="text/css" href="../static/Base.css">
-    <link rel="stylesheet" type="text/css" href="../static/Panier.css">
+    <link rel="stylesheet" type="text/css" href="../static/Inventaire.css">
     <script src="../static/scripts.js"></script>
 </head>
 <body>
 <header>
-    <button id="bouton_accueil"><a href="Accueil">Accueil</a></button>
-    <button id="bouton_panier"><a href="Panier">Panier</a></button>
-    <button id="bouton_catalogue"><a href="Catalogue">Catalogue</a></button>
-    <button id="bouton_profil"><a href="Profil">Profil</a></button>
+    <button id="bouton_inventaire"><a href="Inventaire">Inventaire</a></button>
+    <button id="bouton_profil"><a href="ProfilGerant">Profil</a></button>
 </header>
 <section>
 <h1>
-    Voici votre panier:
+    Voici l'inventaire! :D
 </h1>
+<div id="contenant">
+{% for i in inventaire %}
+<p id="inventaire_tuple">{{i.titre}}, {{i.auteur}}, {{i.genre}}, {{i.annee}}, {{i.ville}}, {{i.type}}, {{i.quantite}}, {{i.prix}}</p>
+{% endfor %}
+</div>
 </section>
 <footer>
     <p id="footer_contact">

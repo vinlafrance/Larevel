@@ -6,6 +6,7 @@
         Connexion
     </title>
     <link rel="stylesheet" type="text/css" href="../static/Base.css">
+    <link rel="stylesheet" type="text/css" href="../static/Connexion.css">
     <script src="../static/scripts.js"></script>
 </head>
 <body>
@@ -16,13 +17,13 @@
     <button id="bouton_connexion"><a href="Connexion">Connexion</a></button>
 </header>
 <section>
-    <h1>Connection</h1>
+    <h1>Connexion</h1>
     <form action="ConnexionTest" method="POST">
         <label for="username">Nom d'utilisateur:</label><br>
         <input type="text" id="username" name="username" required><br>
         <label for="password">Mot de passe:</label><br>
         <input type="password" id="password" name="password" required minlength="8" maxlength="14"><br>
-        <input type="submit" value="Se connecter">
+        <input id="submit" type="submit" value="Se connecter">
     </form>
 
     <button id="bouton_connexion_gerant"><a href="/Gerants">Connexion Gérant</a></button>

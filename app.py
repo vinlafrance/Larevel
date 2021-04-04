@@ -23,6 +23,7 @@ def verify_password(stored_password, provided_password):
 
 app = Flask(__name__)
 ProfilUtilisateur = {"username" : "", "nom" : "", "courriel" : ""}
+Gerant = {"nom" : ""}
 
 @app.route("/")
 def main():
@@ -79,6 +80,25 @@ def Description():
 def ConnexionGerants():
     return render_template("ConnexionGerants.html")
 
+@app.route("/GerantsTest", methods=['POST'])
+def GerantsTest():
+    nom_gerant = '"' + request.form.get('nom_gerant') + '"'
+    gid = request.form.get('gid')
+    conn= pymysql.connect(host='localhost',user='root',password='',db='larevel', charset='utf8mb4', autocommit=True)
+    cmd='SELECT gid FROM Gerants WHERE nom='+nom_gerant+';'
+    cur=conn.cursor()
+    cur.execute(cmd)
+    gidVrai = cur.fetchone()
+    if (gidVrai!=None) and (int(gidVrai[0]) == int(gid)):
+        cmd='SELECT * FROM Gerants WHERE nom='+nom_gerant+';'
+        cur=conn.cursor()
+        cur.execute(cmd)
+        info = cur.fetchone()
+        global Gerant
+        Gerant["nom"]=info[1]
+        return render_template('ConnexionGerants_succes.html', gerant=Gerant) 
+    return render_template("ConnexionGerants.html", message="Informations invalides!")
+
 @app.route("/Inscription")
 def Inscription():
     return render_template("Inscription.html")
@@ -91,10 +111,16 @@ def Panier():
 def Profil():
     return render_template("Profil.html", profil=ProfilUtilisateur)
 
+@app.route("/ProfilGerant")
+def ProfilGerant():
+    return render_template("ProfilGerant.html", gerant=Gerant)
+
 @app.route("/Deconnexion")
 def Deconnexion():
     global ProfilUtilisateur
     ProfilUtilisateur = {"username" : "", "nom" : "", "courriel" : ""}
+    global Gerant
+    Gerant = {"nom" : ""}
     return render_template("Deconnexion.html")
 
 @app.route("/InscriptionTest", methods=['POST'])
@@ -114,6 +140,18 @@ def InscriptionTest():
     cur=conn.cursor()
     cur.execute(cmd)
     return render_template("Inscription.html", message="Félicitation, vous êtes maintenant inscrit!")
+
+@app.route("/Inventaire")
+def Inventaire():
+    inventaire = []
+    conn= pymysql.connect(host='localhost',user='root',password='',db='larevel', charset='utf8mb4', autocommit=True)
+    cmd='select titre, auteur, genre, annee, ville, type, quantite, prix from Inventaire I, Catalogue C, Boutiques B WHERE I.lid = C.lid and B.bid = I.bid;'
+    cur=conn.cursor()
+    cur.execute(cmd)
+    for i in range(100):
+        item = cur.fetchone()
+        inventaire.append({"titre" : item[0], "auteur" : item[1], "genre" : item[2], "annee" : item[3], "ville" : item[4], "type" : item[5], "quantite" : item[6], "prix" : item[7]})
+    return render_template("Inventaire.html", inventaire=inventaire)
 
 if __name__ == "__main__":
     app.run()
