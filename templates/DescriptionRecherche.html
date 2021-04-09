@@ -3,10 +3,10 @@
 <head>
     <meta charset="UTF-8">
     <title>
-        Catalogue
+        Description
     </title>
     <link rel="stylesheet" type="text/css" href="../static/Base.css">
-    <link rel="stylesheet" type="text/css" href="../static/Catalogue.css">
+    <link rel="stylesheet" type="text/css" href="../static/Description.css">
     <script src="../static/scripts.js"></script>
 </head>
 <body>
@@ -15,22 +15,11 @@
     <button id="bouton_panier"><a href="Panier">Panier</a></button>
     <button id="bouton_catalogue"><a href="Catalogue">Catalogue</a></button>
     <button id="bouton_profil"><a href="Profil">Profil</a></button>
-
-    <form action="PourRecherche" method="POST">
-    <input id="titreRecherche" name="titreRecherche" type="text" placeholder="Taper ici le titre">
-        <input id="submit" type="submit" value="Recherche">
-     </form>
-
 </header>
 <section>
 <h1>
-    Voici le catalogue! :)
+    Description de l'article:
 </h1>
-<div id="contenant">
-{% for c in catalogue %}
-<p id="catalogue_item"><a href="Description">{{c.titre}}, {{c.auteur}}, {{c.genre}}, {{c.annee}}</a></p>
-{% endfor %}
-</div>
 </section>
 <footer>
     <p id="footer_contact">

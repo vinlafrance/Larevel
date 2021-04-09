@@ -12,16 +12,6 @@ body {
     text-align: center;
 }
 
-div{
-    overflow: scroll;
-    height: 600px;
-    background-color: aqua;
-    border: 1px black solid;
-    width: 300px;
-    margin: 0 auto;
-    white-space: nowrap;
-    font-size: large;
-}
 
 h1 {
     font-family: Didot, "Didot LT STD", "Hoefler Text", Garamond, "Times New Roman", serif;
