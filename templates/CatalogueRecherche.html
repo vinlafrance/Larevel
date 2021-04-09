@@ -3,10 +3,10 @@
 <head>
     <meta charset="UTF-8">
     <title>
-        Description
+        Catalogue
     </title>
     <link rel="stylesheet" type="text/css" href="../static/Base.css">
-    <link rel="stylesheet" type="text/css" href="../static/Description.css">
+    <link rel="stylesheet" type="text/css" href="../static/Catalogue.css">
     <script src="../static/scripts.js"></script>
 </head>
 <body>
@@ -15,11 +15,22 @@
     <button id="bouton_panier"><a href="Panier">Panier</a></button>
     <button id="bouton_catalogue"><a href="Catalogue">Catalogue</a></button>
     <button id="bouton_profil"><a href="Profil">Profil</a></button>
+
+    <form id="idrecherche" action="PourRecherche" method="POST">
+    <input id="titreRecherche" name="titreRecherche" type="text" placeholder="Taper ici le titre du livre">
+        <input id="submit" type="submit" value="Recherche">
+     </form>
+
 </header>
 <section>
 <h1>
-    Description de l'article:
+    Résultat de la recherche
 </h1>
+<div id="contenant">
+{% for c in catalogueRecherche %}
+<p id="catalogue_item"><a href="Description">{{c.titre}}, {{c.auteur}}, {{c.genre}}, {{c.annee}}</a></p>
+{% endfor %}
+</div>
 </section>
 <footer>
     <p id="footer_contact">
