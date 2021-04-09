@@ -39,7 +39,7 @@ def Accueil():
 def ConnexionTest():
     username = '"' + request.form.get('username') + '"'
     password = request.form.get('password')
-    conn= pymysql.connect(host='localhost',user='root',password='mysql401',db='larevel', charset='utf8mb4', autocommit=True)
+    conn= pymysql.connect(host='localhost',user='root',password='',db='larevel', charset='utf8mb4', autocommit=True)
     cmd='SELECT password FROM Clients WHERE username='+username+';'
     cur=conn.cursor()
     cur.execute(cmd)
@@ -59,7 +59,7 @@ def ConnexionTest():
 @app.route("/Catalogue")
 def Catalogue():
     catalogue = []
-    conn= pymysql.connect(host='localhost',user='root',password='mysql401',db='larevel', charset='utf8mb4', autocommit=True)
+    conn= pymysql.connect(host='localhost',user='root',password='',db='larevel', charset='utf8mb4', autocommit=True)
     cmd='SELECT * FROM Catalogue;'
     cur=conn.cursor()
     cur.execute(cmd)
@@ -71,7 +71,7 @@ def Catalogue():
 @app.route("/PourRecherche", methods=['POST'])
 def PourRecherche():
     titreRecherche = request.form.get('titreRecherche')
-    conn = pymysql.connect(host='localhost', user='root', password='mysql401', db='larevel', charset='utf8mb4',
+    conn = pymysql.connect(host='localhost', user='root', password='', db='larevel', charset='utf8mb4',
                            autocommit=True)
     cmd = """SELECT titre FROM Catalogue WHERE titre LIKE '%{}%'""".format(titreRecherche)
     cmd += ";"
@@ -102,7 +102,7 @@ def ConnexionGerants():
 def GerantsTest():
     nom_gerant = '"' + request.form.get('nom_gerant') + '"'
     gid = request.form.get('gid')
-    conn= pymysql.connect(host='localhost',user='root',password='mysql401',db='larevel', charset='utf8mb4', autocommit=True)
+    conn= pymysql.connect(host='localhost',user='root',password='',db='larevel', charset='utf8mb4', autocommit=True)
     cmd='SELECT gid FROM Gerants WHERE nom='+nom_gerant+';'
     cur=conn.cursor()
     cur.execute(cmd)
@@ -144,7 +144,7 @@ def Deconnexion():
 @app.route("/InscriptionTest", methods=['POST'])
 def InscriptionTest():
     username = '"' + request.form.get("username") + '"'
-    conn= pymysql.connect(host='localhost',user='root',password='mysql401',db='larevel', charset='utf8mb4', autocommit=True)
+    conn= pymysql.connect(host='localhost',user='root',password='',db='larevel', charset='utf8mb4', autocommit=True)
     cmd='SELECT * FROM Clients WHERE username='+username+';'
     cur=conn.cursor()
     cur.execute(cmd)
@@ -162,7 +162,7 @@ def InscriptionTest():
 @app.route("/Inventaire")
 def Inventaire():
     inventaire = []
-    conn= pymysql.connect(host='localhost',user='root',password='mysql401',db='larevel', charset='utf8mb4', autocommit=True)
+    conn= pymysql.connect(host='localhost',user='root',password='',db='larevel', charset='utf8mb4', autocommit=True)
     cmd='select titre, auteur, genre, annee, ville, type, quantite, prix from Inventaire I, Catalogue C, Boutiques B WHERE I.lid = C.lid and B.bid = I.bid;'
     cur=conn.cursor()
     cur.execute(cmd)
