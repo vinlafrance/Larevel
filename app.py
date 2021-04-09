@@ -63,7 +63,7 @@ def Catalogue():
     cmd='SELECT * FROM Catalogue;'
     cur=conn.cursor()
     cur.execute(cmd)
-    for i in range(100):
+    for i in range(cur.rowcount):
         item = cur.fetchone()
         catalogue.append({"titre" : item[1], "auteur" : item[2], "genre" : item[3], "annee" : item[4]})
     return render_template("Catalogue.html", catalogue=catalogue)
@@ -78,8 +78,18 @@ def PourRecherche():
     cur = conn.cursor()
     cur.execute(cmd)
     titrelivre = cur.fetchone()
+    catalogueRecherche = []
     if (titrelivre!=None):
-        return render_template('DescriptionRecherche.html')
+        conn = pymysql.connect(host='localhost', user='root', password='', db='larevel', charset='utf8mb4',
+                               autocommit=True)
+        cmd = """SELECT * FROM Catalogue WHERE titre LIKE '%{}%'""".format(titreRecherche)
+        cmd += ";"
+        cur = conn.cursor()
+        cur.execute(cmd)
+        for i in range(cur.rowcount):
+            item = cur.fetchone()
+            catalogueRecherche.append({"titre": item[1], "auteur": item[2], "genre": item[3], "annee": item[4]})
+        return render_template('catalogueRecherche.html', catalogueRecherche=catalogueRecherche)
     return render_template("Catalogue.html") # message="Nous n'avons pas ce livre malheureusement"
 
 @app.route("/Connexion")
@@ -89,10 +99,6 @@ def Connection():
 @app.route("/Description")
 def Description():
     return render_template("Description.html")
-
-@app.route("/DescriptionRecherche")
-def DescriptionRecherche():
-    return render_template("DescriptionRecherche.html")
 
 @app.route("/Gerants")
 def ConnexionGerants():
