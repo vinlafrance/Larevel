@@ -5,7 +5,6 @@
     <title>
         Catalogue
     </title>
-    <link rel="stylesheet" type="text/css" href="../static/Base.css">
     <link rel="stylesheet" type="text/css" href="../static/Catalogue.css">
     <script src="../static/scripts.js"></script>
 </head>
@@ -36,7 +35,6 @@
 {% for c in catalogue %}
 <p class="catalogue_item"><a href="Description{{c.id}}">{{c.titre}}, {{c.auteur}}, {{c.genre}}, {{c.annee}}</a></p>
 {% endfor %}
-
 </div>
 </section>
 <footer>
