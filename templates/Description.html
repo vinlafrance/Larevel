@@ -20,6 +20,12 @@
 <h1>
     Description de l'article:
 </h1>
+<p>{{catalogue.titre}}, {{catalogue.auteur}}, {{catalogue.genre}}, {{catalogue.annee}}</p>
+<h2>Disponibilités :</h2>
+{% for i in inventaire %}
+<p class="inventaire_tuple"> {{i.ville}} : {{i.titre}}, {{i.auteur}}, {{i.genre}}, {{i.annee}}, {{i.type}}, {{i.quantite}}, {{i.prix}}</p>
+<button><a href="Panier">Ajouter au panier</a></button>
+{% endfor %}
 </section>
 <footer>
     <p id="footer_contact">

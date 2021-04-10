@@ -16,20 +16,27 @@
     <button id="bouton_catalogue"><a href="Catalogue">Catalogue</a></button>
     <button id="bouton_profil"><a href="Profil">Profil</a></button>
 
-    <form id="idrecherche" action="PourRecherche" method="POST">
+    <form id="recherche" action="CatalogueRecherche" method="POST">
+    <label for="titreRecherche">Recherche : </label>
     <input id="titreRecherche" name="titreRecherche" type="text" placeholder="Taper ici le titre du livre">
-        <input id="submit" type="submit" value="Recherche">
-     </form>
+        <input id="submit" type="submit" value="Confirmer">
+    </form>
 
 </header>
 <section>
 <h1>
     Voici le catalogue! :)
 </h1>
+
+{% if nbTitres %}
+<div id="message">Livres correspondant à la recherche : {{nbTitres}}</div>
+{% endif %}
+
 <div id="contenant">
 {% for c in catalogue %}
-<p id="catalogue_item"><a href="Description">{{c.titre}}, {{c.auteur}}, {{c.genre}}, {{c.annee}}</a></p>
+<p class="catalogue_item"><a href="{{c.id}}">{{c.titre}}, {{c.auteur}}, {{c.genre}}, {{c.annee}}</a></p>
 {% endfor %}
+
 </div>
 </section>
 <footer>

@@ -63,42 +63,56 @@ def Catalogue():
     cmd='SELECT * FROM Catalogue;'
     cur=conn.cursor()
     cur.execute(cmd)
-    for i in range(cur.rowcount):
+    for i in range(100):
         item = cur.fetchone()
-        catalogue.append({"titre" : item[1], "auteur" : item[2], "genre" : item[3], "annee" : item[4]})
+        catalogue.append({"id" : item[0], "titre" : item[1], "auteur" : item[2], "genre" : item[3], "annee" : item[4]})
     return render_template("Catalogue.html", catalogue=catalogue)
 
-@app.route("/PourRecherche", methods=['POST'])
+@app.route("/CatalogueRecherche", methods=['POST'])
 def PourRecherche():
+    catalogue = []
     titreRecherche = request.form.get('titreRecherche')
-    conn = pymysql.connect(host='localhost', user='root', password='', db='larevel', charset='utf8mb4',
-                           autocommit=True)
-    cmd = """SELECT titre FROM Catalogue WHERE titre LIKE '%{}%'""".format(titreRecherche)
-    cmd += ";"
+    conn = pymysql.connect(host='localhost', user='root', password='', db='larevel', charset='utf8mb4', autocommit=True)
+    cmd = "SELECT * FROM Catalogue WHERE titre LIKE '%"+titreRecherche+"%';"
     cur = conn.cursor()
     cur.execute(cmd)
-    titrelivre = cur.fetchone()
-    catalogueRecherche = []
-    if (titrelivre!=None):
-        conn = pymysql.connect(host='localhost', user='root', password='', db='larevel', charset='utf8mb4',
-                               autocommit=True)
-        cmd = """SELECT * FROM Catalogue WHERE titre LIKE '%{}%'""".format(titreRecherche)
-        cmd += ";"
-        cur = conn.cursor()
-        cur.execute(cmd)
-        for i in range(cur.rowcount):
-            item = cur.fetchone()
-            catalogueRecherche.append({"titre": item[1], "auteur": item[2], "genre": item[3], "annee": item[4]})
-        return render_template('catalogueRecherche.html', catalogueRecherche=catalogueRecherche)
-    return render_template("Catalogue.html") # message="Nous n'avons pas ce livre malheureusement"
+    infos = cur
+    cmd = "SELECT COUNT(titre) FROM Catalogue WHERE titre LIKE '%"+titreRecherche+"%';"
+    cur = conn.cursor()
+    cur.execute(cmd)
+    nbTitres = cur.fetchone()
+    if nbTitres[0] == 0:
+        return render_template("Catalogue.html", catalogue=catalogue, nbTitres=nbTitres)
+    for i in range(nbTitres[0]):
+        item = infos.fetchone()
+        catalogue.append({"id" : item[0], "titre" : item[1], "auteur" : item[2], "genre" : item[3], "annee" : item[4]})
+    return render_template("Catalogue.html", catalogue=catalogue, nbTitres=nbTitres[0])
 
 @app.route("/Connexion")
 def Connection():
     return render_template("Connexion.html")
 
-@app.route("/Description")
-def Description():
-    return render_template("Description.html")
+@app.route('/<int:item_id>')
+def Description(item_id):
+    inventaire = []
+    conn = pymysql.connect(host='localhost', user='root', password='', db='larevel', charset='utf8mb4', autocommit=True)
+    cmd = 'SELECT * FROM Catalogue WHERE lid='+str(item_id)+';'
+    cur = conn.cursor()
+    cur.execute(cmd)
+    item = cur.fetchone()
+    catalogue = {"id" : item[0], "titre" : item[1], "auteur" : item[2], "genre" : item[3], "annee" : item[4]}
+    cmd = 'select I.lid, titre, auteur, genre, annee, ville, type, quantite, prix from Inventaire I, Catalogue C, Boutiques B WHERE I.lid = '+str(item_id)+' and I.lid = C.lid and B.bid = I.bid;'
+    cur = conn.cursor()
+    cur.execute(cmd)
+    inv = cur
+    cmd = 'SELECT COUNT(lid) FROM Inventaire WHERE lid='+str(item_id)+';'
+    cur = conn.cursor()
+    cur.execute(cmd)
+    nb = cur.fetchone()
+    for i in range(nb[0]):
+        item = inv.fetchone()
+        inventaire.append({"id" : item[0], "titre" : item[1], "auteur" : item[2], "genre" : item[3], "annee" : item[4], "ville" : item[5], "type" : item[6], "quantite" : item[7], "prix" : item[8]})
+    return render_template("Description.html", catalogue=catalogue, inventaire=inventaire)
 
 @app.route("/Gerants")
 def ConnexionGerants():
@@ -169,12 +183,12 @@ def InscriptionTest():
 def Inventaire():
     inventaire = []
     conn= pymysql.connect(host='localhost',user='root',password='',db='larevel', charset='utf8mb4', autocommit=True)
-    cmd='select titre, auteur, genre, annee, ville, type, quantite, prix from Inventaire I, Catalogue C, Boutiques B WHERE I.lid = C.lid and B.bid = I.bid;'
+    cmd='select lid, titre, auteur, genre, annee, ville, type, quantite, prix from Inventaire I, Catalogue C, Boutiques B WHERE I.lid = C.lid and B.bid = I.bid;'
     cur=conn.cursor()
     cur.execute(cmd)
     for i in range(100):
         item = cur.fetchone()
-        inventaire.append({"titre" : item[0], "auteur" : item[1], "genre" : item[2], "annee" : item[3], "ville" : item[4], "type" : item[5], "quantite" : item[6], "prix" : item[7]})
+        inventaire.append({"id" : item[0], "titre" : item[1], "auteur" : item[2], "genre" : item[3], "annee" : item[4], "ville" : item[5], "type" : item[6], "quantite" : item[7], "prix" : item[8]})
     return render_template("Inventaire.html", inventaire=inventaire)
 
 if __name__ == "__main__":
