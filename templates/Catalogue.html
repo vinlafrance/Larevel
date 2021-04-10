@@ -27,8 +27,12 @@
     Voici le catalogue! :)
 </h1>
 
+{% if message %}
+<div class="message">{{message}}</div>
+{% endif %}
+
 {% if nbTitres %}
-<div id="message">Livres correspondant à la recherche : {{nbTitres}}</div>
+<div class="message">Livres correspondant à la recherche : {{nbTitres}}</div>
 {% endif %}
 
 <div class="contenant">

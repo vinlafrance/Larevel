@@ -85,7 +85,7 @@ def PourRecherche():
     cur.execute(cmd)
     nbTitres = cur.fetchone()
     if nbTitres[0] == 0:
-        return render_template("Catalogue.html", catalogue=catalogue, nbTitres=0)
+        return render_template("Catalogue.html", catalogue=catalogue, message="Aucun résultat ne correspond à la recherche.")
     for i in range(nbTitres[0]):
         item = infos.fetchone()
         catalogue.append({"id" : item[0], "titre" : item[1], "auteur" : item[2], "genre" : item[3], "annee" : item[4]})
