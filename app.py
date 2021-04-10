@@ -1,3 +1,6 @@
+# pylint: disable=unused-variable
+# pylint: enable=too-many-lines
+
 from flask import Flask, render_template, request
 import pymysql, pymysql.cursors
 import hashlib, binascii, os
@@ -82,7 +85,7 @@ def PourRecherche():
     cur.execute(cmd)
     nbTitres = cur.fetchone()
     if nbTitres[0] == 0:
-        return render_template("Catalogue.html", catalogue=catalogue, nbTitres=nbTitres)
+        return render_template("Catalogue.html", catalogue=catalogue, nbTitres=nbTitres[0])
     for i in range(nbTitres[0]):
         item = infos.fetchone()
         catalogue.append({"id" : item[0], "titre" : item[1], "auteur" : item[2], "genre" : item[3], "annee" : item[4]})
@@ -92,7 +95,7 @@ def PourRecherche():
 def Connection():
     return render_template("Connexion.html")
 
-@app.route('/<int:item_id>')
+@app.route('/Description<int:item_id>')
 def Description(item_id):
     inventaire = []
     conn = pymysql.connect(host='localhost', user='root', password='', db='larevel', charset='utf8mb4', autocommit=True)
@@ -101,17 +104,16 @@ def Description(item_id):
     cur.execute(cmd)
     item = cur.fetchone()
     catalogue = {"id" : item[0], "titre" : item[1], "auteur" : item[2], "genre" : item[3], "annee" : item[4]}
-    cmd = 'select I.lid, titre, auteur, genre, annee, ville, type, quantite, prix from Inventaire I, Catalogue C, Boutiques B WHERE I.lid = '+str(item_id)+' and I.lid = C.lid and B.bid = I.bid;'
-    cur = conn.cursor()
-    cur.execute(cmd)
-    inv = cur
+    cmd = 'select I.lid, titre, auteur, genre, annee, ville, type, quantite, prix, B.bid from Inventaire I, Catalogue C, Boutiques B WHERE I.lid = '+str(item_id)+' and I.lid = C.lid and B.bid = I.bid;'
+    inv = conn.cursor()
+    inv.execute(cmd)
     cmd = 'SELECT COUNT(lid) FROM Inventaire WHERE lid='+str(item_id)+';'
     cur = conn.cursor()
     cur.execute(cmd)
     nb = cur.fetchone()
     for i in range(nb[0]):
         item = inv.fetchone()
-        inventaire.append({"id" : item[0], "titre" : item[1], "auteur" : item[2], "genre" : item[3], "annee" : item[4], "ville" : item[5], "type" : item[6], "quantite" : item[7], "prix" : item[8]})
+        inventaire.append({"id" : item[0], "titre" : item[1], "auteur" : item[2], "genre" : item[3], "annee" : item[4], "ville" : item[5], "type" : item[6], "quantite" : item[7], "prix" : item[8], "bid" : item[9]})
     return render_template("Description.html", catalogue=catalogue, inventaire=inventaire)
 
 @app.route("/Gerants")
@@ -143,7 +145,81 @@ def Inscription():
 
 @app.route("/Panier")
 def Panier():
-    return render_template("Panier.html")
+    PanierUtilisateur = []
+    conn= pymysql.connect(host='localhost',user='root',password='',db='larevel', charset='utf8mb4', autocommit=True)
+    cmd='select P.lid, titre, auteur, genre, annee, ville, P.type, P.quantite, P.prix, P.bid from Catalogue C, Boutiques B, Panier P WHERE P.username='+ProfilUtilisateur["username"]+' and P.lid = C.lid and B.bid = P.bid;'
+    cur=conn.cursor()
+    cur.execute(cmd)
+    cmd='select count(lid) from Panier where username='+ProfilUtilisateur["username"]+';'
+    count = conn.cursor()
+    count.execute(cmd)
+    nb = count.fetchone()
+    if nb[0] != 0 :
+        for i in range(nb[0]):
+            item = cur.fetchone()
+            PanierUtilisateur.append({"id" : item[0], "titre" : item[1], "auteur" : item[2], "genre" : item[3], "annee" : item[4], "ville" : item[5], "type" : item[6], "quantite" : item[7], "prix" : item[8], "bid" : item[9]})
+        return render_template("Panier.html", panier=PanierUtilisateur)
+    return render_template("Panier.html", message="Aucun item dans le panier.")
+
+@app.route("/PanierAjout<int:item_id>_<int:boutique_id>_<string:item_type>_<float:item_prix>")
+def PanierAjout(item_id, boutique_id, item_type, item_prix):
+    PanierUtilisateur = []
+    global ProfilUtilisateur
+    conn= pymysql.connect(host='localhost',user='root',password='',db='larevel', charset='utf8mb4', autocommit=True)
+    cmd="select * from panier where username="+ProfilUtilisateur["username"]+" and lid="+str(item_id)+" and bid="+str(boutique_id)+" and type='"+item_type+"';"
+    cur = conn.cursor()
+    cur.execute(cmd)
+    infos = cur.fetchone()
+    if infos!=None:
+        cmd="update panier set quantite="+str(infos[3]+1)+" where username="+ProfilUtilisateur["username"]+" and lid="+str(item_id)+" and bid="+str(boutique_id)+" and type='"+item_type+"';"
+        cur = conn.cursor()
+        cur.execute(cmd)
+    else:
+        cmd="insert into panier value ("+ProfilUtilisateur["username"]+", "+str(item_id)+", "+str(boutique_id)+", 1, '"+item_type+"', "+str(item_prix)+");"
+        cur = conn.cursor()
+        cur.execute(cmd)
+    cmd='select P.lid, titre, auteur, genre, annee, ville, P.type, P.quantite, P.prix, P.bid from Catalogue C, Boutiques B, Panier P WHERE P.username='+ProfilUtilisateur["username"]+' and P.lid = C.lid and B.bid = P.bid;'
+    cur=conn.cursor()
+    cur.execute(cmd)
+    cmd='select count(lid) from Panier where username='+ProfilUtilisateur["username"]+';'
+    count = conn.cursor()
+    count.execute(cmd)
+    nb = count.fetchone()
+    for i in range(nb[0]):
+        item = cur.fetchone()
+        PanierUtilisateur.append({"id" : item[0], "titre" : item[1], "auteur" : item[2], "genre" : item[3], "annee" : item[4], "ville" : item[5], "type" : item[6], "quantite" : item[7], "prix" : item[8], "bid" : item[9]})
+    return render_template("Panier.html", panier=PanierUtilisateur)
+
+@app.route("/PanierRetrait<int:item_id>_<int:boutique_id>_<string:item_type>_<float:item_prix>")
+def PanierRetrait(item_id, boutique_id, item_type, item_prix):
+    PanierUtilisateur = []
+    global ProfilUtilisateur
+    conn= pymysql.connect(host='localhost',user='root',password='',db='larevel', charset='utf8mb4', autocommit=True)
+    cmd="select quantite from panier where username="+ProfilUtilisateur["username"]+" and lid="+str(item_id)+" and bid="+str(boutique_id)+" and type='"+item_type+"';"
+    cur = conn.cursor()
+    cur.execute(cmd)
+    quantite = cur.fetchone()
+    if quantite[0] > 1:
+        cmd="update panier set quantite="+str(quantite[0]-1)+" where username="+ProfilUtilisateur["username"]+" and lid="+str(item_id)+" and bid="+str(boutique_id)+" and type='"+item_type+"';"
+        cur = conn.cursor()
+        cur.execute(cmd)
+    else:
+        cmd="delete from panier where username="+ProfilUtilisateur["username"]+" and lid="+str(item_id)+" and bid="+str(boutique_id)+" and type='"+item_type+"';"
+        cur = conn.cursor()
+        cur.execute(cmd)
+    cmd='select P.lid, titre, auteur, genre, annee, ville, P.type, P.quantite, P.prix, P.bid from Catalogue C, Boutiques B, Panier P WHERE P.username='+ProfilUtilisateur["username"]+' and P.lid = C.lid and B.bid = P.bid;'
+    cur=conn.cursor()
+    cur.execute(cmd)
+    cmd='select count(lid) from Panier where username='+ProfilUtilisateur["username"]+';'
+    count = conn.cursor()
+    count.execute(cmd)
+    nb = count.fetchone()
+    if nb[0] == 0:
+        return render_template("Panier.html", message="Aucun item dans le panier.")
+    for i in range(nb[0]):
+        item = cur.fetchone()
+        PanierUtilisateur.append({"id" : item[0], "titre" : item[1], "auteur" : item[2], "genre" : item[3], "annee" : item[4], "ville" : item[5], "type" : item[6], "quantite" : item[7], "prix" : item[8], "bid" : item[9]})
+    return render_template("Panier.html", panier=PanierUtilisateur)
 
 @app.route("/Profil")
 def Profil():
@@ -183,7 +259,7 @@ def InscriptionTest():
 def Inventaire():
     inventaire = []
     conn= pymysql.connect(host='localhost',user='root',password='',db='larevel', charset='utf8mb4', autocommit=True)
-    cmd='select lid, titre, auteur, genre, annee, ville, type, quantite, prix from Inventaire I, Catalogue C, Boutiques B WHERE I.lid = C.lid and B.bid = I.bid;'
+    cmd='select I.lid, titre, auteur, genre, annee, ville, type, quantite, prix from Inventaire I, Catalogue C, Boutiques B WHERE I.lid = C.lid and B.bid = I.bid;'
     cur=conn.cursor()
     cur.execute(cmd)
     for i in range(100):

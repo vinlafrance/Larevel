@@ -24,7 +24,7 @@
 <h2>Disponibilités :</h2>
 {% for i in inventaire %}
 <p class="inventaire_tuple"> {{i.ville}} : {{i.titre}}, {{i.auteur}}, {{i.genre}}, {{i.annee}}, {{i.type}}, {{i.quantite}}, {{i.prix}}</p>
-<button><a href="Panier">Ajouter au panier</a></button>
+<button><a href="PanierAjout{{i.id}}_{{i.bid}}_{{i.type}}_{{i.prix}}">Ajouter un exemplaire au panier</a></button>
 {% endfor %}
 </section>
 <footer>

@@ -32,9 +32,9 @@
 <div id="message">Livres correspondant à la recherche : {{nbTitres}}</div>
 {% endif %}
 
-<div id="contenant">
+<div class="contenant">
 {% for c in catalogue %}
-<p class="catalogue_item"><a href="{{c.id}}">{{c.titre}}, {{c.auteur}}, {{c.genre}}, {{c.annee}}</a></p>
+<p class="catalogue_item"><a href="Description{{c.id}}">{{c.titre}}, {{c.auteur}}, {{c.genre}}, {{c.annee}}</a></p>
 {% endfor %}
 
 </div>

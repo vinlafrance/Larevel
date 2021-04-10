@@ -20,6 +20,15 @@
 <h1>
     Voici votre panier:
 </h1>
+{% if message %}
+<div id="message_panier">{{message}}</div>
+{% endif %}
+
+<div class="contenant">
+{% for p in panier %}
+<p class="panier_item">{{p.ville}} : {{p.titre}}, {{p.auteur}}, {{p.genre}}, {{p.annee}}, {{p.type}}, {{p.quantite}}, {{p.prix}}</p>
+<button><a href="PanierRetrait{{p.id}}_{{p.bid}}_{{p.type}}_{{p.prix}}">Retirer un exemplaire du panier</a></button>
+{% endfor %}
 </section>
 <footer>
     <p id="footer_contact">
