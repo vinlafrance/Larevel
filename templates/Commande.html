@@ -3,9 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <title>
-        Panier
+        Commande
     </title>
-    <link rel="stylesheet" type="text/css" href="../static/Panier.css">
+    <link rel="stylesheet" type="text/css" href="../static/Commande.css">
     <script src="../static/scripts.js"></script>
 </head>
 <body>
@@ -17,23 +17,17 @@
 </header>
 <section>
 <h1>
-    Voici votre panier:
+    Voici votre commande! :D : 
 </h1>
-{% if message %}
-<p>{{message}}</p>
-{% endif %}
-
-{% if rien %}
-<p>{{rien}}</p>
-{% endif %}
 
 <div class="contenant">
-{% for p in panier %}
-<p class="panier_item">{{p.ville}} : {{p.titre}}, {{p.auteur}}, {{p.genre}}, {{p.annee}}, {{p.type}}, {{p.quantite}}, {{p.prix}}</p>
-<button><a href="PanierRetrait{{p.id}}_{{p.bid}}_{{p.type}}_{{p.prix}}">Retirer un exemplaire du panier</a></button>
+{% for c in commande %}
+<p class="commande_item">{{c.ville}} : {{c.titre}}, {{c.auteur}}, {{c.genre}}, {{c.annee}}, {{c.type}}, {{c.quantite}}, {{c.prix}}</p>
 {% endfor %}
-<br>
-<button id="passer_commande"><a href="Commande">Passer la commande</a></button>
+<h1>Total de la commande : {{prixTotal}}</h1>
+<button><a href="CommandeConfirmee">Confirmer la commande</a></button>
+</div>
+
 </section>
 <footer>
     <p id="footer_contact">

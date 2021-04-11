@@ -267,6 +267,40 @@ def Inventaire():
         inventaire.append({"id" : item[0], "titre" : item[1], "auteur" : item[2], "genre" : item[3], "annee" : item[4], "ville" : item[5], "type" : item[6], "quantite" : item[7], "prix" : item[8]})
     return render_template("Inventaire.html", inventaire=inventaire)
 
+@app.route("/Commande")
+def Commande():
+    global ProfilUtilisateur
+    prixTotal = 0
+    PanierUtilisateur = []
+    conn= pymysql.connect(host='localhost',user='root',password='',db='larevel', charset='utf8mb4', autocommit=True)
+    cmd='select P.lid, titre, auteur, genre, annee, ville, P.type, P.quantite, P.prix, P.bid from Catalogue C, Boutiques B, Panier P WHERE P.username='+ProfilUtilisateur["username"]+' and P.lid = C.lid and B.bid = P.bid;'
+    cur=conn.cursor()
+    cur.execute(cmd)
+    cmd='select count(lid) from Panier where username='+ProfilUtilisateur["username"]+';'
+    count = conn.cursor()
+    count.execute(cmd)
+    nb = count.fetchone()
+    cmd='select prix, quantite from Panier where username='+ProfilUtilisateur["username"]+';'
+    prixEtQuantite = conn.cursor()
+    prixEtQuantite.execute(cmd)
+    if nb[0] == 0:
+        return render_template("Panier.html", rien="Veuillez ajoutez un item à votre panier pour passer une commande.", message="Aucun item dans le panier.")
+    for i in range(nb[0]):
+        infos = prixEtQuantite.fetchone()
+        prixTotal += infos[0] * infos[1]
+        item = cur.fetchone()
+        PanierUtilisateur.append({"id" : item[0], "titre" : item[1], "auteur" : item[2], "genre" : item[3], "annee" : item[4], "ville" : item[5], "type" : item[6], "quantite" : item[7], "prix" : item[8], "bid" : item[9]})
+    return render_template("Commande.html", commande=PanierUtilisateur, prixTotal=prixTotal)
+
+@app.route("/CommandeConfirmee")
+def CommandeConfirmee():
+    global ProfilUtilisateur
+    conn= pymysql.connect(host='localhost',user='root',password='',db='larevel', charset='utf8mb4', autocommit=True)
+    cmd='delete from panier where username='+ProfilUtilisateur["username"]+';'
+    cur=conn.cursor()
+    cur.execute(cmd)
+    return render_template("CommandeConfirmee.html")
+
 if __name__ == "__main__":
     app.run()
 
