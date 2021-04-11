@@ -19,7 +19,14 @@
 <h1>
     Description de l'article:
 </h1>
-<p>{{catalogue.titre}}, {{catalogue.auteur}}, {{catalogue.genre}}, {{catalogue.annee}}</p>
+<div>
+<img src="../static/images/{{catalogue.couverture}}" height="160px" width="120px">
+<p>
+    {{catalogue.titre}}<br>
+    {{catalogue.auteur}}<br>
+    {{catalogue.genre}}<br>
+    {{catalogue.annee}}</p>
+</div>
 <h2>Disponibilités :</h2>
 {% for i in inventaire %}
 <p class="inventaire_tuple"> {{i.ville}} : {{i.titre}}, {{i.auteur}}, {{i.genre}}, {{i.annee}}, {{i.type}}, {{i.quantite}}, {{i.prix}}</p>

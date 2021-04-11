@@ -29,8 +29,11 @@
 
 <div class="contenant">
 {% for p in panier %}
+<div>
+<img src="../static/images/{{p.couverture}}" height="80px" width="60px">
 <p class="panier_item">{{p.ville}} : {{p.titre}}, {{p.auteur}}, {{p.genre}}, {{p.annee}}, {{p.type}}, {{p.quantite}}, {{p.prix}}</p>
 <button><a href="PanierRetrait{{p.id}}_{{p.bid}}_{{p.type}}_{{p.prix}}">Retirer un exemplaire du panier</a></button>
+</div>
 {% endfor %}
 <br>
 <button id="passer_commande"><a href="Commande">Passer la commande</a></button>

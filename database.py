@@ -56,7 +56,7 @@ for i in range(5):
 
 #Relation Catalogue
 cursor = connection.cursor()
-creation_table = "CREATE TABLE IF NOT EXISTS Catalogue (lid integer NOT NULL, titre varchar(100) NOT NULL, auteur varchar(100) NOT NULL, genre varchar(100) NOT NULL, annee year NOT NULL, PRIMARY KEY(lid));"
+creation_table = "CREATE TABLE IF NOT EXISTS Catalogue (lid integer NOT NULL, titre varchar(100) NOT NULL, auteur varchar(100) NOT NULL, genre varchar(100) NOT NULL, annee year NOT NULL, couverture varchar(100) NOT NULL, PRIMARY KEY(lid));"
 cursor.execute(creation_table)
 with open("MySQL/catalogue.txt", 'r', encoding='utf8') as item:
     liste = item.read().splitlines()

@@ -68,7 +68,7 @@ def Catalogue():
     cur.execute(cmd)
     for i in range(100):
         item = cur.fetchone()
-        catalogue.append({"id" : item[0], "titre" : item[1], "auteur" : item[2], "genre" : item[3], "annee" : item[4]})
+        catalogue.append({"id" : item[0], "titre" : item[1], "auteur" : item[2], "genre" : item[3], "annee" : item[4], "couverture" : item[5]})
     return render_template("Catalogue.html", catalogue=catalogue)
 
 @app.route("/CatalogueRecherche", methods=['POST'])
@@ -88,7 +88,7 @@ def PourRecherche():
         return render_template("Catalogue.html", catalogue=catalogue, message="Aucun résultat ne correspond à la recherche.")
     for i in range(nbTitres[0]):
         item = infos.fetchone()
-        catalogue.append({"id" : item[0], "titre" : item[1], "auteur" : item[2], "genre" : item[3], "annee" : item[4]})
+        catalogue.append({"id" : item[0], "titre" : item[1], "auteur" : item[2], "genre" : item[3], "annee" : item[4], "couverture" : item[5]})
     return render_template("Catalogue.html", catalogue=catalogue, nbTitres=nbTitres[0])
 
 @app.route("/Connexion")
@@ -103,7 +103,7 @@ def Description(item_id):
     cur = conn.cursor()
     cur.execute(cmd)
     item = cur.fetchone()
-    catalogue = {"id" : item[0], "titre" : item[1], "auteur" : item[2], "genre" : item[3], "annee" : item[4]}
+    catalogue = {"id" : item[0], "titre" : item[1], "auteur" : item[2], "genre" : item[3], "annee" : item[4], "couverture" : item[5]}
     cmd = 'select I.lid, titre, auteur, genre, annee, ville, type, quantite, prix, B.bid from Inventaire I, Catalogue C, Boutiques B WHERE I.lid = '+str(item_id)+' and I.lid = C.lid and B.bid = I.bid;'
     inv = conn.cursor()
     inv.execute(cmd)
@@ -147,7 +147,7 @@ def Inscription():
 def Panier():
     PanierUtilisateur = []
     conn= pymysql.connect(host='localhost',user='root',password='',db='larevel', charset='utf8mb4', autocommit=True)
-    cmd='select P.lid, titre, auteur, genre, annee, ville, P.type, P.quantite, P.prix, P.bid from Catalogue C, Boutiques B, Panier P WHERE P.username='+ProfilUtilisateur["username"]+' and P.lid = C.lid and B.bid = P.bid;'
+    cmd='select P.lid, titre, auteur, genre, annee, ville, P.type, P.quantite, P.prix, P.bid, couverture from Catalogue C, Boutiques B, Panier P WHERE P.username='+ProfilUtilisateur["username"]+' and P.lid = C.lid and B.bid = P.bid;'
     cur=conn.cursor()
     cur.execute(cmd)
     cmd='select count(lid) from Panier where username='+ProfilUtilisateur["username"]+';'
@@ -157,7 +157,7 @@ def Panier():
     if nb[0] != 0 :
         for i in range(nb[0]):
             item = cur.fetchone()
-            PanierUtilisateur.append({"id" : item[0], "titre" : item[1], "auteur" : item[2], "genre" : item[3], "annee" : item[4], "ville" : item[5], "type" : item[6], "quantite" : item[7], "prix" : item[8], "bid" : item[9]})
+            PanierUtilisateur.append({"id" : item[0], "titre" : item[1], "auteur" : item[2], "genre" : item[3], "annee" : item[4], "ville" : item[5], "type" : item[6], "quantite" : item[7], "prix" : item[8], "bid" : item[9], "couverture" : item[10]})
         return render_template("Panier.html", panier=PanierUtilisateur)
     return render_template("Panier.html", message="Aucun item dans le panier.")
 
@@ -178,7 +178,7 @@ def PanierAjout(item_id, boutique_id, item_type, item_prix):
         cmd="insert into panier value ("+ProfilUtilisateur["username"]+", "+str(item_id)+", "+str(boutique_id)+", 1, '"+item_type+"', "+str(item_prix)+");"
         cur = conn.cursor()
         cur.execute(cmd)
-    cmd='select P.lid, titre, auteur, genre, annee, ville, P.type, P.quantite, P.prix, P.bid from Catalogue C, Boutiques B, Panier P WHERE P.username='+ProfilUtilisateur["username"]+' and P.lid = C.lid and B.bid = P.bid;'
+    cmd='select P.lid, titre, auteur, genre, annee, ville, P.type, P.quantite, P.prix, P.bid, couverture from Catalogue C, Boutiques B, Panier P WHERE P.username='+ProfilUtilisateur["username"]+' and P.lid = C.lid and B.bid = P.bid;'
     cur=conn.cursor()
     cur.execute(cmd)
     cmd='select count(lid) from Panier where username='+ProfilUtilisateur["username"]+';'
@@ -187,7 +187,7 @@ def PanierAjout(item_id, boutique_id, item_type, item_prix):
     nb = count.fetchone()
     for i in range(nb[0]):
         item = cur.fetchone()
-        PanierUtilisateur.append({"id" : item[0], "titre" : item[1], "auteur" : item[2], "genre" : item[3], "annee" : item[4], "ville" : item[5], "type" : item[6], "quantite" : item[7], "prix" : item[8], "bid" : item[9]})
+        PanierUtilisateur.append({"id" : item[0], "titre" : item[1], "auteur" : item[2], "genre" : item[3], "annee" : item[4], "ville" : item[5], "type" : item[6], "quantite" : item[7], "prix" : item[8], "bid" : item[9], "couverture" : item[10]})
     return render_template("Panier.html", panier=PanierUtilisateur)
 
 @app.route("/PanierRetrait<int:item_id>_<int:boutique_id>_<string:item_type>_<float:item_prix>")
@@ -207,7 +207,7 @@ def PanierRetrait(item_id, boutique_id, item_type, item_prix):
         cmd="delete from panier where username="+ProfilUtilisateur["username"]+" and lid="+str(item_id)+" and bid="+str(boutique_id)+" and type='"+item_type+"';"
         cur = conn.cursor()
         cur.execute(cmd)
-    cmd='select P.lid, titre, auteur, genre, annee, ville, P.type, P.quantite, P.prix, P.bid from Catalogue C, Boutiques B, Panier P WHERE P.username='+ProfilUtilisateur["username"]+' and P.lid = C.lid and B.bid = P.bid;'
+    cmd='select P.lid, titre, auteur, genre, annee, ville, P.type, P.quantite, P.prix, P.bid, couverture from Catalogue C, Boutiques B, Panier P WHERE P.username='+ProfilUtilisateur["username"]+' and P.lid = C.lid and B.bid = P.bid;'
     cur=conn.cursor()
     cur.execute(cmd)
     cmd='select count(lid) from Panier where username='+ProfilUtilisateur["username"]+';'
@@ -218,7 +218,7 @@ def PanierRetrait(item_id, boutique_id, item_type, item_prix):
         return render_template("Panier.html", message="Aucun item dans le panier.")
     for i in range(nb[0]):
         item = cur.fetchone()
-        PanierUtilisateur.append({"id" : item[0], "titre" : item[1], "auteur" : item[2], "genre" : item[3], "annee" : item[4], "ville" : item[5], "type" : item[6], "quantite" : item[7], "prix" : item[8], "bid" : item[9]})
+        PanierUtilisateur.append({"id" : item[0], "titre" : item[1], "auteur" : item[2], "genre" : item[3], "annee" : item[4], "ville" : item[5], "type" : item[6], "quantite" : item[7], "prix" : item[8], "bid" : item[9], "couverture" : item[10]})
     return render_template("Panier.html", panier=PanierUtilisateur)
 
 @app.route("/Profil")
@@ -259,12 +259,12 @@ def InscriptionTest():
 def Inventaire():
     inventaire = []
     conn= pymysql.connect(host='localhost',user='root',password='',db='larevel', charset='utf8mb4', autocommit=True)
-    cmd='select I.lid, titre, auteur, genre, annee, ville, type, quantite, prix from Inventaire I, Catalogue C, Boutiques B WHERE I.lid = C.lid and B.bid = I.bid;'
+    cmd='select I.lid, titre, auteur, genre, annee, ville, type, quantite, prix, I.bid from Inventaire I, Catalogue C, Boutiques B WHERE I.lid = C.lid and B.bid = I.bid;'
     cur=conn.cursor()
     cur.execute(cmd)
     for i in range(100):
         item = cur.fetchone()
-        inventaire.append({"id" : item[0], "titre" : item[1], "auteur" : item[2], "genre" : item[3], "annee" : item[4], "ville" : item[5], "type" : item[6], "quantite" : item[7], "prix" : item[8]})
+        inventaire.append({"id" : item[0], "titre" : item[1], "auteur" : item[2], "genre" : item[3], "annee" : item[4], "ville" : item[5], "type" : item[6], "quantite" : item[7], "prix" : item[8], "bid" : item[9]})
     return render_template("Inventaire.html", inventaire=inventaire)
 
 @app.route("/Commande")
@@ -273,7 +273,7 @@ def Commande():
     prixTotal = 0
     PanierUtilisateur = []
     conn= pymysql.connect(host='localhost',user='root',password='',db='larevel', charset='utf8mb4', autocommit=True)
-    cmd='select P.lid, titre, auteur, genre, annee, ville, P.type, P.quantite, P.prix, P.bid from Catalogue C, Boutiques B, Panier P WHERE P.username='+ProfilUtilisateur["username"]+' and P.lid = C.lid and B.bid = P.bid;'
+    cmd='select P.lid, titre, auteur, genre, annee, ville, P.type, P.quantite, P.prix, P.bid, couverture from Catalogue C, Boutiques B, Panier P WHERE P.username='+ProfilUtilisateur["username"]+' and P.lid = C.lid and B.bid = P.bid;'
     cur=conn.cursor()
     cur.execute(cmd)
     cmd='select count(lid) from Panier where username='+ProfilUtilisateur["username"]+';'
@@ -289,7 +289,7 @@ def Commande():
         infos = prixEtQuantite.fetchone()
         prixTotal += infos[0] * infos[1]
         item = cur.fetchone()
-        PanierUtilisateur.append({"id" : item[0], "titre" : item[1], "auteur" : item[2], "genre" : item[3], "annee" : item[4], "ville" : item[5], "type" : item[6], "quantite" : item[7], "prix" : item[8], "bid" : item[9]})
+        PanierUtilisateur.append({"id" : item[0], "titre" : item[1], "auteur" : item[2], "genre" : item[3], "annee" : item[4], "ville" : item[5], "type" : item[6], "quantite" : item[7], "prix" : item[8], "bid" : item[9], "couverture" : item[10]})
     return render_template("Commande.html", commande=PanierUtilisateur, prixTotal=prixTotal)
 
 @app.route("/CommandeConfirmee")

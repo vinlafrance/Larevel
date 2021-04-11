@@ -11,46 +11,51 @@ def hash_password(password):
 
 # ouvre aleatoire.txt en mode lecture
 # change le contenu pour que ca devient une liste
-with open('titres.txt', 'r') as titres:
+with open('c:/Users/vinla/Larevel/MySQL/titres.txt', 'r') as titres:
     listeTitre = titres.read().splitlines()
 
 # ouvre auteurs.txt en mode lecture
 # change le contenu pour que ca devient une liste
-with open('auteurs.txt', 'r') as auteurs:
+with open('c:/Users/vinla/Larevel/MySQL/auteurs.txt', 'r') as auteurs:
     listeAuteur = auteurs.read().splitlines()
 
 # ouvre usernames.txt en mode lecture
 # change le contenu pour que ca devient une liste
-with open("usernames.txt", 'r') as usernames:
+with open("c:/Users/vinla/Larevel/MySQL/usernames.txt", 'r') as usernames:
     listeUsername = usernames.read().splitlines()
 
 # ouvre passwordsBase.txt en mode lecture
 # change le contenu pour que ca devient une liste
-with open("passwordsBase.txt", 'r') as passwordsBase:
+with open("c:/Users/vinla/Larevel/MySQL/passwordsBase.txt", 'r') as passwordsBase:
     listePasswordBase = passwordsBase.read().splitlines()
 
 # ouvre passwordsBase.txt en mode ecriture
 # hash chaque password de listePasswordBase
 # ecris le resultat dans passwordsHashed.txt
-with open("passwordsHashed.txt", 'w') as passwordsHashed:
+with open("c:/Users/vinla/Larevel/MySQL/passwordsHashed.txt", 'w') as passwordsHashed:
     for i in range(0, 100):
         hashed = hash_password(listePasswordBase[i])+"\n"
         passwordsHashed.write(hashed)
 
 # ouvre passwordsHashed.txt en mode lecture
 # change le contenu pour que ca devient une liste
-with open("passwordsHashed.txt",'r') as passwordsHashed:
+with open("c:/Users/vinla/Larevel/MySQL/passwordsHashed.txt",'r') as passwordsHashed:
     listePasswordHashed = passwordsHashed.read().splitlines()
 
 # ouvre nom_clients.txt en mode lecture
 # change le contenu pour que ca devient une liste
-with open("nom_clients.txt",'r') as nom_clients:
+with open("c:/Users/vinla/Larevel/MySQL/nom_clients.txt",'r') as nom_clients:
     listeNomClient = nom_clients.read().splitlines()
 
 # ouvre courriels.txt en mode lecture
 # change le contenu pour que ca devient une liste
-with open("courriels.txt",'r') as courriels:
+with open("c:/Users/vinla/Larevel/MySQL/courriels.txt",'r') as courriels:
     listeCourriel = courriels.read().splitlines()
+
+# ouvre couvertures.txt en mode lecture
+# change le contenu pour que ca devient une liste
+with open("c:/Users/vinla/Larevel/MySQL/couvertures.txt",'r') as couvertures:
+    listeCouvertures = couvertures.read().splitlines()
 
 genre = ['Roman', 'Polar', 'Theatre', 'Poesie', 'Science-fiction']
 annee = ['2010', '2011', '2012', '2013', '2014', '2015', '2016', '2017', '2018', '2019', '2020', '2021']
@@ -62,18 +67,16 @@ prix = [9.99, 14.99, 19.99, 24.99, 29.99]
 
 # ouvre catalogue.txt qui se trouve dans le meme dossier que ce .py,  ou le créer si ce fichier n'existe pas
 # en mode ecriture
-# OU catalogue = open('catalogue.txt', 'w')
-#    catalogue.close()  a la fin
-with open('catalogue.txt', 'w') as catalogue:
+with open('c:/Users/vinla/Larevel/MySQL/catalogue.txt', 'w') as catalogue:
     for i in range(1, 101):
         ligne = ("(" + str(i) + ", " + '''"''' + listeTitre[i-1] + '''"''' + ", " + '''"''' + 
         listeAuteur[i-1] + '''"''' + ", " + '''"''' + random.choice(genre) + '''"''' + ", " + 
-        random.choice(annee) + ")\n")
+        random.choice(annee) + ", " + '''"''' + listeCouvertures[i-1] + '''"''' + ")\n")
         catalogue.write(ligne)
 
 # ouvre inventaire.txt qui se trouve dans le meme dossier que ce .py,  ou le créer si ce fichier n'existe pas
 # en mode ecriture
-with open('inventaire.txt', 'w') as inventaire:
+with open('c:/Users/vinla/Larevel/MySQL/inventaire.txt', 'w') as inventaire:
     for i in range(1, 101):
         ligne = ("(" + str(i) + ", " + str(random.choice(bid)) + ", " + str(random.choice(quantite)) + 
         ", " + '''"''' + random.choice(typeCouverture) + '''"''' + ", " + 
@@ -82,7 +85,7 @@ with open('inventaire.txt', 'w') as inventaire:
 
 # ouvre clients.txt qui se trouve dans le meme dossier que ce .py,  ou le créer si ce fichier n'existe pas
 # en mode ecriture
-with open('clients.txt', 'w') as clients:
+with open('c:/Users/vinla/Larevel/MySQL/clients.txt', 'w') as clients:
     for i in range(1, 101):
         ligne = ("(" + '''"''' + listeUsername[i-1] + '''"''' + ", " + '''"''' + listePasswordHashed[i-1] + 
         '''"''' + ", " + '''"''' + listeNomClient[i-1] + '''"''' + ", " + '''"''' + 

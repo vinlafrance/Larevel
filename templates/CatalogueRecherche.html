@@ -27,7 +27,14 @@
 </h1>
 <div class="contenant">
 {% for c in catalogueRecherche %}
-<p class="catalogue_item"><a href="Description">{{c.titre}}, {{c.auteur}}, {{c.genre}}, {{c.annee}}</a></p>
+<div>
+<img src="../static/images/{{c.couverture}}" height="80px" width="60px">
+<p class="catalogue_item"><a href="Description">
+    {{c.titre}}<br>
+    {{c.auteur}}<br>
+    {{c.genre}}<br>
+    {{c.annee}}</a></p>
+</div>
 {% endfor %}
 </div>
 </section>
