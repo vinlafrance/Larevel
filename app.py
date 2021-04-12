@@ -66,7 +66,11 @@ def Catalogue():
     cmd='SELECT * FROM Catalogue;'
     cur=conn.cursor()
     cur.execute(cmd)
-    for i in range(100):
+    cmd = "SELECT COUNT(lid) FROM Catalogue;"
+    count = conn.cursor()
+    count.execute(cmd)
+    nb = count.fetchone()
+    for i in range(nb[0]):
         item = cur.fetchone()
         catalogue.append({"id" : item[0], "titre" : item[1], "auteur" : item[2], "genre" : item[3], "annee" : item[4], "couverture" : item[5]})
     return render_template("Catalogue.html", catalogue=catalogue)
