@@ -17,11 +17,11 @@
 </header>
 <section>
     <h1>Connexion gérant</h1>
-    <form action="GerantsTest" method="POST">
-        <label for="nom_gerant">Nom du gérant:</label><br>
-        <input type="text" id="nom_gerant" name="nom_gerant" required><br>
-        <label for="gid">Numéro d'identification du gérant:</label><br>
-        <input type="text" id="gid" name="gid" required><br>
+    <form name="formConnexionGerant" action="GerantsTest" onsubmit="return validerConnexionGerant()" method="POST">
+        <label for="username">Nom d'utilisateur::</label><br>
+        <input type="text" id="username" name="username" required><br>
+        <label for="password">Mot de passe:</label><br>
+        <input type="password" id="password" name="password" required min="8" maxlength="14"><br>
         <input id="submit" type="submit" value="Se connecter">
     </form>
 

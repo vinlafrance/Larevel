@@ -38,7 +38,7 @@
 <div class="contenant">
 {% for c in catalogue %}
 <div class="interieur">
-<img src="../static/images/{{c.couverture}}" height="80px" width="60px">
+<a href="Description{{c.id}}"><img src="../static/images/{{c.couverture}}" height="80px" width="60px"></a>
 <p class="catalogue_item"><a href="Description{{c.id}}">
     {{c.titre}}<br>
     {{c.auteur}}<br>

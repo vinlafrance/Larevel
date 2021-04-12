@@ -22,17 +22,10 @@
 
 <div class="contenant">
 {% for c in commande %}
-<div>
+<div class="interieur">
 <img src="../static/images/{{c.couverture}}" height="80px" width="60px">
 <p class="commande_item">
-    {{c.ville}} :<br>
-    {{c.titre}}<br>
-    {{c.auteur}}<br>
-    {{c.genre}}<br>
-    {{c.annee}}<br>
-    {{c.type}}<br>
-    {{c.quantite}}<br>
-    {{c.prix}}</p>
+    {{c.ville}} : {{c.titre}}, {{c.auteur}}, {{c.genre}}, {{c.annee}}, {{c.type}}, {{c.quantite}}, {{c.prix}}</p>
 </div>
 {% endfor %}
 <h1>Total de la commande : {{prixTotal}}</h1>

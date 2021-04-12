@@ -17,7 +17,7 @@
 </header>
 <section>
     <h1>Inscription</h1>
-    <form action="InscriptionTest" method="POST">
+    <form name="formInscription" action="InscriptionTest" onsubmit="return validerInscription()" method="POST">
         <label for="nom">Prénom et nom:</label><br>
         <input type="text" id="nom" name="nom" required><br>
         <label for="courriel">Courriel:</label><br>

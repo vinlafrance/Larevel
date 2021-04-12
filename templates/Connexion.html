@@ -17,7 +17,7 @@
 </header>
 <section>
     <h1>Connexion</h1>
-    <form action="ConnexionTest" method="POST">
+    <form name="formConnexion" action="ConnexionTest" onsubmit="return validerConnexion()" method="POST">
         <label for="username">Nom d'utilisateur:</label><br>
         <input type="text" id="username" name="username" required><br>
         <label for="password">Mot de passe:</label><br>

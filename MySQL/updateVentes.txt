@@ -1,0 +1,31 @@
+DELIMITER //
+CREATE PROCEDURE updateVentes(IN user varchar(100))
+BEGIN
+DECLARE b integer;
+DECLARE q integer;
+DECLARE p double;
+DECLARE lecture_complete integer DEFAULT FALSE;
+DECLARE curseur CURSOR FOR SELECT P.bid, P.quantite, P.prix from Panier P where P.username=user;
+DECLARE CONTINUE HANDLER FOR NOT FOUND SET lecture_complete = TRUE;
+OPEN curseur;
+lecteur: LOOP
+FETCH curseur INTO b, q, p;
+IF lecture_complete THEN
+LEAVE lecteur;
+END IF;
+SELECT B.ventes into @temp from Boutiques B where B.bid=b;
+IF b = 1 THEN
+UPDATE Boutiques B SET ventes:= @temp + q * p where B.bid=1;
+ELSEIF b = 2 THEN
+UPDATE Boutiques B SET ventes:= @temp + q * p where B.bid=2;
+ELSEIF b = 3 THEN
+UPDATE Boutiques B SET ventes:= @temp + q * p where B.bid=3;
+ELSEIF b = 4 THEN
+UPDATE Boutiques B SET ventes:= @temp + q * p where B.bid=4;
+ELSE
+UPDATE Boutiques B SET ventes:= @temp + q * p where B.bid=5;
+END IF;
+END LOOP lecteur;
+CLOSE curseur;
+END //
+DELIMITER ;

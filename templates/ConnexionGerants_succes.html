@@ -10,11 +10,12 @@
 </head>
 <body>
 <header>
-    <button id="bouton_inventaire"><a href="Inventaire">Inventaire</a></button>
+    <button id="bouton_infosBoutique"><a href="InfosBoutique{{profil.bid}}">Infos boutique</a></button>
+    <button id="bouton_inventaire"><a href="Inventaire{{profil.bid}}">Inventaire</a></button>
     <button id="bouton_profil"><a href="ProfilGerant">Profil</a></button>
 </header>
 <section>
-    <p>Bonjour {{gerant.nom}}!</p>
+    <p>Bonjour {{profil.nom}}!</p>
 </section>
 <footer>
     <p id="footer_contact">

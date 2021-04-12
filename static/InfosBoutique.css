@@ -1,29 +1,3 @@
-.contenant{
-    overflow: auto;
-    height: 83%;
-    width: 60%;
-    text-align: center;
-    margin-left: auto;
-    margin-right: auto;
-    margin-top: 10px;
-}
-
-.interieur{
-    width: 50%;
-    height: 200px;
-    font-size: 24px;
-    float: left;
-}
-
-img{
-    float: left;
-}
-
-.inventaire_item{
-    height: 200px;
-    float: left;
-}
-
 html{
     height: 100%;
     margin: 0;

@@ -10,7 +10,8 @@
 </head>
 <body>
 <header>
-    <button id="bouton_inventaire"><a href="Inventaire">Inventaire</a></button>
+    <button id="bouton_infosBoutique"><a href="InfosBoutique{{profil.bid}}">Infos boutique</a></button>
+    <button id="bouton_inventaire"><a href="Inventaire{{profil.bid}}">Inventaire</a></button>
     <button id="bouton_profil"><a href="ProfilGerant">Profil</a></button>
 </header>
 <section>
@@ -19,7 +20,9 @@
 </h1>
 <h2>
     <br>
-    Nom : {{gerant.nom}}
+    Username : {{profil.username}}<br>
+    Nom : {{profil.nom}}<br>
+    Courriel : {{profil.courriel}}
 </h2>
 <button id="bouton_deconnexion"><a href="Deconnexion">Se déconnecter</a></button>
 </section>

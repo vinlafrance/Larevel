@@ -26,7 +26,7 @@ def verify_password(stored_password, provided_password):
 
 app = Flask(__name__)
 ProfilUtilisateur = {"username" : "", "nom" : "", "courriel" : ""}
-Gerant = {"nom" : ""}
+GerantActif = {"username" : "", "nom" : "", "courriel" : "", "bid" : ""}
 
 @app.route("/")
 def main():
@@ -122,21 +122,29 @@ def ConnexionGerants():
 
 @app.route("/GerantsTest", methods=['POST'])
 def GerantsTest():
-    nom_gerant = '"' + request.form.get('nom_gerant') + '"'
-    gid = request.form.get('gid')
+    username = '"' + request.form.get('username') + '"'
+    password = request.form.get('password')
     conn= pymysql.connect(host='localhost',user='root',password='',db='larevel', charset='utf8mb4', autocommit=True)
-    cmd='SELECT gid FROM Gerants WHERE nom='+nom_gerant+';'
+    cmd='SELECT password FROM Clients WHERE username='+username+';'
     cur=conn.cursor()
     cur.execute(cmd)
-    gidVrai = cur.fetchone()
-    if (gidVrai!=None) and (int(gidVrai[0]) == int(gid)):
-        cmd='SELECT * FROM Gerants WHERE nom='+nom_gerant+';'
+    passeVrai = cur.fetchone()
+    if (passeVrai!=None) and (verify_password(passeVrai[0], password)):
+        cmd='SELECT G.nom FROM Gerants G, Clients C WHERE C.username='+username+' and C.nom = G.nom;'
         cur=conn.cursor()
         cur.execute(cmd)
-        info = cur.fetchone()
-        global Gerant
-        Gerant["nom"]=info[1]
-        return render_template('ConnexionGerants_succes.html', gerant=Gerant) 
+        nomVrai = cur.fetchone()
+        if (nomVrai!=None) :
+            cmd='SELECT C.nom, C.courriel, B.bid FROM Clients C, Boutiques B, Gerants G WHERE C.username='+username+' and C.nom = G.nom and G.gid = B.gid;'
+            cur=conn.cursor()
+            cur.execute(cmd)
+            info = cur.fetchone()
+            global GerantActif
+            GerantActif["username"]=username
+            GerantActif["nom"]=info[0]
+            GerantActif["courriel"]=info[1]
+            GerantActif["bid"]=info[2]
+            return render_template('ConnexionGerants_succes.html', profil=GerantActif) 
     return render_template("ConnexionGerants.html", message="Informations invalides!")
 
 @app.route("/Inscription")
@@ -227,7 +235,19 @@ def Profil():
 
 @app.route("/ProfilGerant")
 def ProfilGerant():
-    return render_template("ProfilGerant.html", gerant=Gerant)
+    return render_template("ProfilGerant.html", profil=GerantActif)
+
+@app.route("/InfosBoutique<int:bid>")
+def InfosBoutique(bid):
+    infos = {}
+    conn= pymysql.connect(host='localhost',user='root',password='',db='larevel', charset='utf8mb4', autocommit=True)
+    cmd='SELECT ville, ventes FROM Boutiques WHERE bid='+str(bid)+';'
+    cur=conn.cursor()
+    cur.execute(cmd)
+    item = cur.fetchone()
+    infos["ville"] = item[0]
+    infos["ventes"] = item[1]
+    return render_template("InfosBoutique.html", infos = infos, gerant = GerantActif)
 
 @app.route("/Deconnexion")
 def Deconnexion():
@@ -255,17 +275,23 @@ def InscriptionTest():
     cur.execute(cmd)
     return render_template("Inscription.html", message="Félicitation, vous êtes maintenant inscrit!")
 
-@app.route("/Inventaire")
-def Inventaire():
+@app.route("/Inventaire<int:bid>")
+def Inventaire(bid):
     inventaire = []
     conn= pymysql.connect(host='localhost',user='root',password='',db='larevel', charset='utf8mb4', autocommit=True)
-    cmd='select I.lid, titre, auteur, genre, annee, ville, type, quantite, prix, I.bid from Inventaire I, Catalogue C, Boutiques B WHERE I.lid = C.lid and B.bid = I.bid;'
+    cmd='select I.lid, titre, auteur, genre, annee, type, quantite, prix, couverture from Inventaire I, Catalogue C WHERE I.lid = C.lid and I.bid = '+str(bid)+';'
     cur=conn.cursor()
     cur.execute(cmd)
-    for i in range(100):
+    cmd='select count(lid) from Inventaire where bid = '+str(bid)+';'
+    count = conn.cursor()
+    count.execute(cmd)
+    nb = count.fetchone()
+    if nb[0] == 0:
+        return render_template("Inventaire.html", message="Aucun item dans l'inventaire.", gerant=GerantActif)
+    for i in range(nb[0]):
         item = cur.fetchone()
-        inventaire.append({"id" : item[0], "titre" : item[1], "auteur" : item[2], "genre" : item[3], "annee" : item[4], "ville" : item[5], "type" : item[6], "quantite" : item[7], "prix" : item[8], "bid" : item[9]})
-    return render_template("Inventaire.html", inventaire=inventaire)
+        inventaire.append({"id" : item[0], "titre" : item[1], "auteur" : item[2], "genre" : item[3], "annee" : item[4], "type" : item[5], "quantite" : item[6], "prix" : item[7], "couverture" : item[8]})
+    return render_template("Inventaire.html", inventaire=inventaire, gerant=GerantActif)
 
 @app.route("/Commande")
 def Commande():
@@ -296,6 +322,9 @@ def Commande():
 def CommandeConfirmee():
     global ProfilUtilisateur
     conn= pymysql.connect(host='localhost',user='root',password='',db='larevel', charset='utf8mb4', autocommit=True)
+    cmd='call updateVentes('+ProfilUtilisateur["username"]+');'
+    cur=conn.cursor()
+    cur.execute(cmd)
     cmd='delete from panier where username='+ProfilUtilisateur["username"]+';'
     cur=conn.cursor()
     cur.execute(cmd)

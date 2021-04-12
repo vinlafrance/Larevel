@@ -30,8 +30,8 @@
 <div class="contenant">
 {% for p in panier %}
 <div>
-<img src="../static/images/{{p.couverture}}" height="80px" width="60px">
-<p class="panier_item">{{p.ville}} : {{p.titre}}, {{p.auteur}}, {{p.genre}}, {{p.annee}}, {{p.type}}, {{p.quantite}}, {{p.prix}}</p>
+<a href="Description{{p.id}}"><img src="../static/images/{{p.couverture}}" height="80px" width="60px"></a>
+<p class="panier_item"><a href="Description{{p.id}}">{{p.ville}} : {{p.titre}}, {{p.auteur}}, {{p.genre}}, {{p.annee}}, {{p.type}}, {{p.quantite}}, {{p.prix}}</a></p>
 <button><a href="PanierRetrait{{p.id}}_{{p.bid}}_{{p.type}}_{{p.prix}}">Retirer un exemplaire du panier</a></button>
 </div>
 {% endfor %}
