@@ -28,6 +28,15 @@
     {{catalogue.annee}}</p>
 </div>
 <h2>Disponibilités :</h2>
+
+{% if message %}
+<p>{{message}}</p>
+{% endif %}
+
+{% if insuffisant %}
+<p>{{insuffisant}}</p>
+{% endif %}
+
 {% for i in inventaire %}
 <p class="inventaire_tuple"> {{i.ville}} : {{i.titre}}, {{i.auteur}}, {{i.genre}}, {{i.annee}}, {{i.type}}, {{i.quantite}}, {{i.prix}}</p>
 <button><a href="PanierAjout{{i.id}}_{{i.bid}}_{{i.type}}_{{i.prix}}">Ajouter un exemplaire au panier</a></button>

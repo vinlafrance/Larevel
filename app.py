@@ -115,6 +115,8 @@ def Description(item_id):
     cur = conn.cursor()
     cur.execute(cmd)
     nb = cur.fetchone()
+    if nb[0] == 0:
+        return render_template("Description.html", catalogue=catalogue, message="Cet article n'est plus en stock.")
     for i in range(nb[0]):
         item = inv.fetchone()
         inventaire.append({"id" : item[0], "titre" : item[1], "auteur" : item[2], "genre" : item[3], "annee" : item[4], "ville" : item[5], "type" : item[6], "quantite" : item[7], "prix" : item[8], "bid" : item[9]})
@@ -183,6 +185,28 @@ def PanierAjout(item_id, boutique_id, item_type, item_prix):
     cur.execute(cmd)
     infos = cur.fetchone()
     if infos!=None:
+        cmd="select quantite from inventaire where lid="+str(item_id)+" and bid="+str(boutique_id)+" and type='"+item_type+"';"
+        qty = conn.cursor()
+        qty.execute(cmd)
+        quantite = qty.fetchone()
+        if infos[3] == quantite[0]:
+            inventaire = []
+            cmd = 'SELECT * FROM Catalogue WHERE lid='+str(item_id)+';'
+            cur = conn.cursor()
+            cur.execute(cmd)
+            item = cur.fetchone()
+            catalogue = {"id" : item[0], "titre" : item[1], "auteur" : item[2], "genre" : item[3], "annee" : item[4], "couverture" : item[5]}
+            cmd = 'select I.lid, titre, auteur, genre, annee, ville, type, quantite, prix, B.bid from Inventaire I, Catalogue C, Boutiques B WHERE I.lid = '+str(item_id)+' and I.lid = C.lid and B.bid = I.bid;'
+            inv = conn.cursor()
+            inv.execute(cmd)
+            cmd = 'SELECT COUNT(lid) FROM Inventaire WHERE lid='+str(item_id)+';'
+            cur = conn.cursor()
+            cur.execute(cmd)
+            nb = cur.fetchone()
+            for i in range(nb[0]):
+                item = inv.fetchone()
+                inventaire.append({"id" : item[0], "titre" : item[1], "auteur" : item[2], "genre" : item[3], "annee" : item[4], "ville" : item[5], "type" : item[6], "quantite" : item[7], "prix" : item[8], "bid" : item[9]})
+            return render_template("Description.html", catalogue=catalogue, inventaire = inventaire, insuffisant="Nombre d'exemplaires insuffisant en stock.")
         cmd="update panier set quantite="+str(infos[3]+1)+" where username="+ProfilUtilisateur["username"]+" and lid="+str(item_id)+" and bid="+str(boutique_id)+" and type='"+item_type+"';"
         cur = conn.cursor()
         cur.execute(cmd)
@@ -329,6 +353,27 @@ def CommandeConfirmee():
     cmd='call updateVentes('+ProfilUtilisateur["username"]+');'
     cur=conn.cursor()
     cur.execute(cmd)
+    cmd='select lid, bid, quantite, type from panier where username='+ProfilUtilisateur["username"]+';'
+    cur=conn.cursor()
+    cur.execute(cmd)
+    cmd='select count(lid) from Panier where username='+ProfilUtilisateur["username"]+';'
+    count = conn.cursor()
+    count.execute(cmd)
+    nb = count.fetchone()
+    for i in range(nb[0]):
+        item = cur.fetchone()
+        qty = conn.cursor()
+        cmd="select quantite from inventaire where lid="+str(item[0])+" and bid ="+str(item[1])+" and type ='"+item[3]+"';"
+        qty.execute(cmd)
+        quantite = qty.fetchone()
+        if item[2] < quantite[0]:
+            update = conn.cursor()
+            cmd="update inventaire set quantite=quantite-"+str(item[2])+" where lid="+str(item[0])+" and bid ="+str(item[1])+" and type ='"+item[3]+"';"
+            update.execute(cmd)
+        else:
+            delete = conn.cursor()
+            cmd="delete from inventaire where lid="+str(item[0])+" and bid="+str(item[1])+" and type='"+item[3]+"';"
+            delete.execute(cmd)
     cmd='delete from panier where username='+ProfilUtilisateur["username"]+';'
     cur=conn.cursor()
     cur.execute(cmd)
