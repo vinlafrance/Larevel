@@ -70,3 +70,8 @@ function validerConnexionGerant()
         return false;
     }
 }
+
+function validerCommande()
+{
+    
+}

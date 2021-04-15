@@ -36,6 +36,9 @@ for i in range(100):
     cursor = connection.cursor()
     sql = "INSERT INTO Clients VALUE " + liste[i] + ";"
     cursor.execute(sql)
+cursor = connection.cursor()
+sql = "CREATE FULLTEXT INDEX indexClientsUsername on Clients(username);"
+cursor.execute(sql)
 
 #Relation Gerants
 cursor = connection.cursor()
@@ -47,6 +50,9 @@ for i in range(5):
     cursor = connection.cursor()
     sql = "INSERT INTO Gerants VALUE " + liste[i] + ";"
     cursor.execute(sql)
+cursor = connection.cursor()
+sql = "CREATE FULLTEXT INDEX indexGerantsNom on Gerants(nom);"
+cursor.execute(sql)
 
 #Relation Boutiques
 cursor = connection.cursor()
@@ -58,6 +64,9 @@ for i in range(5):
     cursor = connection.cursor()
     sql = "INSERT INTO Boutiques VALUE " + liste[i] + ";"
     cursor.execute(sql)
+cursor = connection.cursor()
+sql = "CREATE UNIQUE INDEX indexBoutiquesBid on Boutiques(bid);"
+cursor.execute(sql)
 
 #Relation Catalogue
 cursor = connection.cursor()
@@ -69,6 +78,9 @@ for i in range(100):
     cursor = connection.cursor()
     sql = "INSERT INTO Catalogue VALUE " + liste[i] + ";"
     cursor.execute(sql)
+cursor = connection.cursor()
+sql = "CREATE UNIQUE INDEX indexCatalogueLid on Catalogue(lid);"
+cursor.execute(sql)
 
 #Relation Inventaire
 cursor = connection.cursor()
@@ -80,11 +92,17 @@ for i in range(100):
     cursor = connection.cursor()
     sql = "INSERT INTO Inventaire VALUE " + liste[i] + ";"
     cursor.execute(sql)
+cursor = connection.cursor()
+sql = "CREATE UNIQUE INDEX indexInventaireLid on Inventaire(lid);"
+cursor.execute(sql)
 
 #Relation Panier
 cursor = connection.cursor()
 creation_table = "CREATE TABLE IF NOT EXISTS Panier (username varchar(100) NOT NULL, lid integer NOT NULL, bid integer NOT NULL, quantite integer NOT NULL, type varchar(10) NOT NULL, prix double NOT NULL, FOREIGN KEY(username) REFERENCES Clients (username), FOREIGN KEY(lid) REFERENCES Catalogue (lid), FOREIGN KEY(bid) REFERENCES Boutiques (bid));"
 cursor.execute(creation_table)
+# cursor = connection.cursor()
+# sql = "CREATE FULLTEXT INDEX indexPanierUsername on Panier(username);"
+# cursor.execute(sql)
 
 #Routine updateVentes
 cursor = connection.cursor()

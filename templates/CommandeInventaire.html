@@ -3,9 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <title>
-        Inventaire
+        Commande Inventaire
     </title>
-    <link rel="stylesheet" type="text/css" href="../static/Inventaire.css">
+    <link rel="stylesheet" type="text/css" href="../static/CommandeInventaire.css">
     <script src="../static/scripts.js"></script>
 </head>
 <body>
@@ -16,30 +16,25 @@
 </header>
 <section>
 <h1>
-    Voici l'inventaire! :D
+    Commande Inventaire : 
 </h1>
 
+<form name="formCommande" action="InventaireAjout{{gerant.bid}}" onsubmit="return validerCommande()" method="POST">
+    <label for="titre">Titre:</label><br>
+    <input type="text" id="titre" name="titre" required><br>
+    <label for="quantite">Quantité:</label><br>
+    <input type="text" id="quantite" name="quantite" required><br>
+    <label for="type">Type:</label><br>
+    <input type="text" id="type" name="type" required><br>
+    <label for="prix">Prix:</label><br>
+    <input type="text" id="prix" name="prix" required><br>
+    <input id="submit" type="submit" value="Commander">
+</form>
+
 {% if message %}
-<div class="message">{{message}}</div>
+<h2>{{message}}</h2>
 {% endif %}
 
-<div class="contenant">
-{% for i in inventaire %}
-<div class="interieur">
-<img src="../static/images/{{i.couverture}}" height="160px" width="120px">
-<p class="inventaire_item">
-    {{i.titre}}<br>
-    {{i.auteur}}<br>
-    {{i.type}}    {{i.annee}}<br>
-    {{i.genre}}    {{i.prix}}<br>
-    {{i.quantite}}
-    </p>
-</div>
-{% endfor %}
-
-<button><a href="CommandeInventaire">Commander des exemplaires pour votre boutique</a></button>
-
-</div>
 </section>
 <footer>
     <p id="footer_contact">

@@ -379,6 +379,38 @@ def CommandeConfirmee():
     cur.execute(cmd)
     return render_template("CommandeConfirmee.html")
 
+@app.route("/CommandeInventaire")
+def CommandeInventaire():
+    return render_template("CommandeInventaire.html", gerant=GerantActif)
+
+@app.route("/InventaireAjout<int:bid>", methods=['POST'])
+def InventaireAjout(bid):
+    titre = '"' + request.form.get('titre') + '"'
+    quantite = request.form.get('quantite')
+    typeCouverture = '"' + request.form.get('type') + '"'
+    prix = request.form.get('prix')
+    conn= pymysql.connect(host='localhost',user='root',password='',db='larevel', charset='utf8mb4', autocommit=True)
+    cmd="SELECT count(*), I.lid FROM Inventaire I, Catalogue C WHERE C.titre="+titre+" and C.lid = I.lid and I.type="+typeCouverture+" and I.prix="+prix+" and I.bid="+str(bid)+";"
+    cur=conn.cursor()
+    cur.execute(cmd)
+    nb = cur.fetchone()
+    if nb[0] == 0:
+        cmd='select lid from catalogue where titre='+titre+';'
+        cur=conn.cursor()
+        cur.execute(cmd)
+        lid = cur.fetchone()
+        if lid!=None :
+            cmd='insert into inventaire value ('+str(lid[0])+','+str(bid)+', '+str(quantite)+', '+typeCouverture+', '+str(prix)+' );'
+            cur=conn.cursor()
+            cur.execute(cmd)
+        else:
+            return render_template("CommandeInventaire.html", message="Ce livre ne se retrouve pas dans le catalogue de Larevel.", gerant=GerantActif)
+    else:
+        cmd="update inventaire set quantite=quantite+"+str(quantite)+" where lid="+str(nb[1])+" and bid ="+str(bid)+" and type ="+typeCouverture+";"
+        cur=conn.cursor()
+        cur.execute(cmd)
+    return render_template("CommandeInventaire.html", message="Commande complétée avec succès! Les exemplaires ont été rajoutés à votre inventaire.", gerant=GerantActif)
+
 if __name__ == "__main__":
     app.run()
 
