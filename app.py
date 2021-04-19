@@ -321,6 +321,27 @@ def Inventaire(bid):
         inventaire.append({"id" : item[0], "titre" : item[1], "auteur" : item[2], "genre" : item[3], "annee" : item[4], "type" : item[5], "quantite" : item[6], "prix" : item[7], "couverture" : item[8]})
     return render_template("Inventaire.html", inventaire=inventaire, gerant=GerantActif)
 
+@app.route("/InventaireRecherche<int:bid>", methods=['POST'])
+def PourRechercheInventaire(bid):
+    inventaire = []
+    titreLivreRecherche = request.form.get('titreRecherche')
+    conn = pymysql.connect(host='localhost', user='root', password='', db='larevel', charset='utf8mb4', autocommit=True)
+    cmd = "SELECT I.lid, C.titre, C.auteur, C.genre, C.annee, I.type, I.quantite, I.prix, C.couverture FROM Inventaire I, Catalogue C WHERE I.bid = "+str(bid)+" AND titre LIKE '%" + titreLivreRecherche + "%' AND C.lid = I.lid;"
+    cur = conn.cursor()
+    cur.execute(cmd)
+    infos = cur
+    cmd = "SELECT COUNT(C.titre) FROM Catalogue C, Inventaire I WHERE I.bid = "+str(bid)+" AND titre LIKE '%" + titreLivreRecherche + "%' AND C.lid = I.lid;"
+    cur = conn.cursor()
+    cur.execute(cmd)
+    nbTitres = cur.fetchone()
+    if nbTitres[0] == 0:
+        return render_template("Inventaire.html", inventaire=inventaire, message="Aucun résultat ne correspond à la recherche.", gerant=GerantActif)
+    for i in range(nbTitres[0]):
+        item = infos.fetchone()
+        inventaire.append({"id" : item[0], "titre" : item[1], "auteur" : item[2], "genre" : item[3], "annee" : item[4], "type" : item[5], "quantite" : item[6], "prix" : item[7], "couverture" : item[8]})
+    return render_template("Inventaire.html", inventaire=inventaire, gerant=GerantActif, nbTitres=nbTitres[0])
+
+
 @app.route("/Commande")
 def Commande():
     global ProfilUtilisateur
