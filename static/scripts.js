@@ -90,7 +90,7 @@ function validerCommande()
         alert("Format de la quantite invalide.");
         return false;
     }
-    if (typeLivre != "souple" && type != "rigide") 
+    if (typeLivre != "souple" && typeLivre != "rigide") 
     {
         alert("Format du type invalide.");
         return false;
