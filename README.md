@@ -13,4 +13,4 @@ Utilisation :<br>
     - Exécuter le fichier database.py afin de peupler votre database;<br>
     - Exécuter le fichier app.py afin d'avoir accès à l'application web.<br>
 <br>
-Lorsque vous voulez remettre à neuf la databse, seulement exécuter database.py de nouveau.
+Lorsque vous voulez remettre à neuf la database, seulement exécuter database.py de nouveau.
