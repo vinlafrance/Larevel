@@ -6,7 +6,7 @@ function nonConnecte()
 function validerConnexion() 
 {
     let usernameRegex = /^[a-zA-Z0-9][a-zA-Z]+[0-9]*$/;
-    let passwordRegex = /^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9]).{8,}$/
+    let passwordRegex = /^[A-Za-z0-9]+(0-9)*$/
     let username = document.forms["formConnexion"]["username"].value.match(usernameRegex);
     let password = document.forms["formConnexion"]["password"].value.match(passwordRegex);
     if (username == null) 
@@ -24,7 +24,7 @@ function validerConnexion()
 function validerInscription()
 {
     let usernameRegex = /^[a-zA-Z0-9][a-zA-Z]+[0-9]*$/;
-    let passwordRegex = /^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9]).{8,}$/;
+    let passwordRegex = /^[A-Za-z0-9]+(0-9)*$/;
     let nameRegex = /^[a-zA-ZàáâäãåąčćęèéêëėįìíîïłńòóôöõøùúûüųūÿýżźñçčšžÀÁÂÄÃÅĄĆČĖĘÈÉÊËÌÍÎÏĮŁŃÒÓÔÖÕØÙÚÛÜŲŪŸÝŻŹÑßÇŒÆČŠŽ∂ð ,.'-]+$/u;
     let courrielRegex = /[^@ \t\r\n]+@[^@ \t\r\n]+\.[^@ \t\r\n]+/;
     let username = document.forms["formInscription"]["username"].value.match(usernameRegex);
@@ -56,7 +56,7 @@ function validerInscription()
 function validerConnexionGerant()
 {
     let usernameRegex = /^[a-zA-Z0-9][a-zA-Z]+[0-9]*$/;
-    let passwordRegex = /^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9]).{8,}$/
+    let passwordRegex = /^[A-Za-z0-9]+(0-9)*$/
     let username = document.forms["formConnexionGerant"]["username"].value.match(usernameRegex);
     let password = document.forms["formConnexionGerant"]["password"].value.match(passwordRegex);
     if (username == null) 

@@ -93,16 +93,13 @@ for i in range(100):
     sql = "INSERT INTO Inventaire VALUE " + liste[i] + ";"
     cursor.execute(sql)
 cursor = connection.cursor()
-sql = "CREATE UNIQUE INDEX indexInventaireLid on Inventaire(lid);"
+sql = "CREATE INDEX indexInventaireLid on Inventaire(lid);"
 cursor.execute(sql)
 
 #Relation Panier
 cursor = connection.cursor()
 creation_table = "CREATE TABLE IF NOT EXISTS Panier (username varchar(100) NOT NULL, lid integer NOT NULL, bid integer NOT NULL, quantite integer NOT NULL, type varchar(10) NOT NULL, prix double NOT NULL, FOREIGN KEY(username) REFERENCES Clients (username), FOREIGN KEY(lid) REFERENCES Catalogue (lid), FOREIGN KEY(bid) REFERENCES Boutiques (bid));"
 cursor.execute(creation_table)
-# cursor = connection.cursor()
-# sql = "CREATE FULLTEXT INDEX indexPanierUsername on Panier(username);"
-# cursor.execute(sql)
 
 #Routine updateVentes
 cursor = connection.cursor()
