@@ -13,6 +13,13 @@
     <button id="bouton_infosBoutique"><a href="InfosBoutique{{gerant.bid}}">Infos boutique</a></button>
     <button id="bouton_inventaire"><a href="Inventaire{{gerant.bid}}">Inventaire</a></button>
     <button id="bouton_profil"><a href="ProfilGerant">Profil</a></button>
+
+     <form id="recherche" action="InventaireRecherche{{gerant.bid}}" method="POST">
+    <label for="titreRecherche">Recherche : </label>
+    <input id="titreRecherche" name="titreRecherche" type="text" placeholder="Taper ici le titre du livre">
+        <input id="submit" type="submit" value="Confirmer">
+    </form>
+
 </header>
 <section>
 <h1>
