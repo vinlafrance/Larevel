@@ -411,7 +411,7 @@ def InventaireAjout(bid):
     typeCouverture = '"' + request.form.get('type') + '"'
     prix = request.form.get('prix')
     conn= pymysql.connect(host='localhost',user='root',password='',db='larevel', charset='utf8mb4', autocommit=True)
-    cmd="SELECT count(*), I.lid FROM Inventaire I, Catalogue C WHERE C.titre="+titre+" and C.lid = I.lid and I.type="+typeCouverture+" and I.prix="+prix+" and I.bid="+str(bid)+";"
+    cmd="SELECT count(*), I.lid FROM Inventaire I, Catalogue C WHERE C.titre="+titre+" and C.lid = I.lid and I.type="+typeCouverture+" and I.prix="+str(prix)+" and I.bid="+str(bid)+";"
     cur=conn.cursor()
     cur.execute(cmd)
     nb = cur.fetchone()

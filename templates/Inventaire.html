@@ -14,10 +14,10 @@
     <button id="bouton_inventaire"><a href="Inventaire{{gerant.bid}}">Inventaire</a></button>
     <button id="bouton_profil"><a href="ProfilGerant">Profil</a></button>
 
-     <form id="recherche" action="InventaireRecherche{{gerant.bid}}" method="POST">
+    <form name="formRecherche" action="InventaireRecherche{{gerant.bid}}" onsubmit="return validerRecherche()" method="POST">
     <label for="titreRecherche">Recherche : </label>
     <input id="titreRecherche" name="titreRecherche" type="text" placeholder="Taper ici le titre du livre">
-        <input id="submit" type="submit" value="Confirmer">
+    <input id="submit" type="submit" value="Confirmer">
     </form>
 
 </header>
@@ -28,6 +28,10 @@
 
 {% if message %}
 <div class="message">{{message}}</div>
+{% endif %}
+
+{% if nbTitres %}
+<div class="nbTitres">Livres correspondant à la recherche : {{nbTitres}}</div>
 {% endif %}
 
 <div class="contenant">

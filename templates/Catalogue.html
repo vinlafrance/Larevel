@@ -15,10 +15,10 @@
     <button id="bouton_catalogue"><a href="Catalogue">Catalogue</a></button>
     <button id="bouton_profil"><a href="Profil">Profil</a></button>
 
-    <form id="recherche" action="CatalogueRecherche" method="POST">
+    <form name="formRecherche" action="CatalogueRecherche" onsubmit="return validerRecherche()" method="POST">
     <label for="titreRecherche">Recherche : </label>
-    <input id="titreRecherche" name="titreRecherche" type="text" placeholder="Taper ici le titre du livre">
-        <input id="submit" type="submit" value="Confirmer">
+    <input class="titreRecherche" name="titreRecherche" type="text" placeholder="Taper ici le titre du livre">
+    <input class="submit" type="submit" value="Confirmer">
     </form>
 
 </header>

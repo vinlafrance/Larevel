@@ -73,5 +73,47 @@ function validerConnexionGerant()
 
 function validerCommande()
 {
-    
+    let titreRegex = /^[a-zA-ZàáâäãåąčćęèéêëėįìíîïłńòóôöõøùúûüųūÿýżźñçčšžÀÁÂÄÃÅĄĆČĖĘÈÉÊËÌÍÎÏĮŁŃÒÓÔÖÕØÙÚÛÜŲŪŸÝŻŹÑßÇŒÆČŠŽ∂ð ,.'-]+$/u;
+    let quantiteRegex = /^[0-9]+$/;
+    let prixRegex = /^\d+(.\d{1,2})?$/;
+    let titre = document.forms["formCommande"]["titre"].value.match(titreRegex);
+    let quantite = document.forms["formCommande"]["quantite"].value.match(quantiteRegex);
+    let typeLivre = document.forms["formCommande"]["type"].value;
+    let prix = document.forms["formCommande"]["prix"].value.match(prixRegex);
+    if (titre == null) 
+    {
+        alert("Format du titre invalide.");
+        return false;
+    }
+    if (quantite == null) 
+    {
+        alert("Format de la quantite invalide.");
+        return false;
+    }
+    if (typeLivre != "souple" && type != "rigide") 
+    {
+        alert("Format du type invalide.");
+        return false;
+    }
+    if (prix == null) 
+    {
+        alert("Format du prix invalide.");
+        return false;
+    }
+}
+
+function validerRecherche()
+{
+    let titreRegex = /^[a-zA-ZàáâäãåąčćęèéêëėįìíîïłńòóôöõøùúûüųūÿýżźñçčšžÀÁÂÄÃÅĄĆČĖĘÈÉÊËÌÍÎÏĮŁŃÒÓÔÖÕØÙÚÛÜŲŪŸÝŻŹÑßÇŒÆČŠŽ∂ð ,.'-]+$/u;
+    let titre = document.forms["formRecherche"]["titreRecherche"].value.match(titreRegex);
+    let test = document.forms["formRecherche"]["titreRecherche"].value;
+    if (test === "")
+    {
+        return true;
+    }
+    if (titre == null) 
+    {
+        alert("Format du titre invalide.");
+        return false;
+    }
 }
